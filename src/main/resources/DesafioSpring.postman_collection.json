@@ -1,0 +1,468 @@
+{
+	"info": {
+		"_postman_id": "4c1141e9-f446-452f-ab21-0c3bfe12da89",
+		"name": "DesafioSpring",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "US_0001-ObtenerHotelesTodos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/hotels",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"hotels"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US_0002-ObtenerHotelesDisponibles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/hotels?dateFrom=12/02/2022&dateTo=19/03/2022&destination=Buenos Aires",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"hotels"
+					],
+					"query": [
+						{
+							"key": "dateFrom",
+							"value": "12/02/2022"
+						},
+						{
+							"key": "dateTo",
+							"value": "19/03/2022"
+						},
+						{
+							"key": "destination",
+							"value": "Buenos Aires"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US_0002-ObtenerHotelesDisponibles-ErrorListaVacia",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/hotels?dateFrom=09/02/2022&dateTo=19/03/2022&destination=Buenos Aires",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"hotels"
+					],
+					"query": [
+						{
+							"key": "dateFrom",
+							"value": "09/02/2022"
+						},
+						{
+							"key": "dateTo",
+							"value": "19/03/2022"
+						},
+						{
+							"key": "destination",
+							"value": "Buenos Aires"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US_0002-ObtenerHotelesDisponibles-ErrorFechas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/hotels?dateFrom=19/03/2022&dateTo=18/03/2022&destination=Buenos Aires",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"hotels"
+					],
+					"query": [
+						{
+							"key": "dateFrom",
+							"value": "19/03/2022"
+						},
+						{
+							"key": "dateTo",
+							"value": "18/03/2022"
+						},
+						{
+							"key": "destination",
+							"value": "Buenos Aires"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US_0003-ReservarHotel",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"arjonamiguel@gmail.com\"\r\n    ,\"booking\":{\r\n        \"dateFrom\":\"20/02/2022\"\r\n        ,\"dateTo\":\"15/04/2022\"\r\n        ,\"destination\":\"Buenos Aires\"\r\n        ,\"hotelCode\":\"BH-0002\"\r\n        ,\"peopleAmount\":2\r\n        ,\"roomType\":\"DOUBLE\"\r\n        ,\"people\":[\r\n            {\r\n                \"dni\":\"12345678\"\r\n                ,\"name\":\"Pepito\"\r\n                ,\"lastname\":\"Gomez\"\r\n                ,\"birthDate\":\"10/11/1982\"\r\n                ,\"mail\":\"arjonamiguel@gmail.com\"\r\n            }\r\n            ,{\r\n                \"dni\":\"12345678\"\r\n                ,\"name\":\"Fulanito\"\r\n                ,\"lastname\":\"Gomez\"\r\n                ,\"birthDate\":\"10/11/1983\"\r\n                ,\"mail\":\"arjonamiguel2@gmail.com\"\r\n            }\r\n        ]\r\n        ,\"paymentMethod\":{\r\n            \"type\":\"CREDIT\"\r\n            ,\"number\":\"1234-1234-1234-1234\"\r\n            ,\"dues\":6\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/booking",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US_0003-ReservarHotel-ErrorCodigo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"arjonamiguel@gmail.com\"\r\n    ,\"booking\":{\r\n        \"dateFrom\":\"20/02/2022\"\r\n        ,\"dateTo\":\"15/04/2022\"\r\n        ,\"destination\":\"Buenos Aires\"\r\n        ,\"hotelCode\":\"CodigoErroneo\"\r\n        ,\"peopleAmount\":2\r\n        ,\"roomType\":\"DOUBLE\"\r\n        ,\"people\":[\r\n            {\r\n                \"dni\":\"12345678\"\r\n                ,\"name\":\"Pepito\"\r\n                ,\"lastname\":\"Gomez\"\r\n                ,\"birthDate\":\"10/11/1982\"\r\n                ,\"mail\":\"arjonamiguel@gmail.com\"\r\n            }\r\n            ,{\r\n                \"dni\":\"12345678\"\r\n                ,\"name\":\"Fulanito\"\r\n                ,\"lastname\":\"Gomez\"\r\n                ,\"birthDate\":\"10/11/1983\"\r\n                ,\"mail\":\"arjonamiguel2@gmail.com\"\r\n            }\r\n        ]\r\n        ,\"paymentMethod\":{\r\n            \"type\":\"CREDIT\"\r\n            ,\"number\":\"1234-1234-1234-1234\"\r\n            ,\"dues\":6\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/booking",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US_0003-ReservarHotel-ErrorFechas",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"arjonamiguel@gmail.com\"\r\n    ,\"booking\":{\r\n        \"dateFrom\":\"20/04/2022\"\r\n        ,\"dateTo\":\"15/04/2022\"\r\n        ,\"destination\":\"Buenos Aires\"\r\n        ,\"hotelCode\":\"BH-0002\"\r\n        ,\"peopleAmount\":2\r\n        ,\"roomType\":\"DOUBLE\"\r\n        ,\"people\":[\r\n            {\r\n                \"dni\":\"12345678\"\r\n                ,\"name\":\"Pepito\"\r\n                ,\"lastname\":\"Gomez\"\r\n                ,\"birthDate\":\"10/11/1982\"\r\n                ,\"mail\":\"arjonamiguel@gmail.com\"\r\n            }\r\n            ,{\r\n                \"dni\":\"12345678\"\r\n                ,\"name\":\"Fulanito\"\r\n                ,\"lastname\":\"Gomez\"\r\n                ,\"birthDate\":\"10/11/1983\"\r\n                ,\"mail\":\"arjonamiguel2@gmail.com\"\r\n            }\r\n        ]\r\n        ,\"paymentMethod\":{\r\n            \"type\":\"CREDIT\"\r\n            ,\"number\":\"1234-1234-1234-1234\"\r\n            ,\"dues\":6\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/booking",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US_0003-ReservarHotel-ErrorCantidadPersonas",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"arjonamiguel@gmail.com\"\r\n    ,\"booking\":{\r\n        \"dateFrom\":\"20/02/2022\"\r\n        ,\"dateTo\":\"15/04/2022\"\r\n        ,\"destination\":\"Buenos Aires\"\r\n        ,\"hotelCode\":\"BH-0002\"\r\n        ,\"peopleAmount\":4\r\n        ,\"roomType\":\"DOUBLE\"\r\n        ,\"people\":[\r\n            {\r\n                \"dni\":\"12345678\"\r\n                ,\"name\":\"Pepito\"\r\n                ,\"lastname\":\"Gomez\"\r\n                ,\"birthDate\":\"10/11/1982\"\r\n                ,\"mail\":\"arjonamiguel@gmail.com\"\r\n            }\r\n            ,{\r\n                \"dni\":\"12345678\"\r\n                ,\"name\":\"Fulanito\"\r\n                ,\"lastname\":\"Gomez\"\r\n                ,\"birthDate\":\"10/11/1983\"\r\n                ,\"mail\":\"arjonamiguel2@gmail.com\"\r\n            }\r\n        ]\r\n        ,\"paymentMethod\":{\r\n            \"type\":\"CREDIT\"\r\n            ,\"number\":\"1234-1234-1234-1234\"\r\n            ,\"dues\":6\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/booking",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US_0004-ObtenerVuelosTodos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/flights",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"flights"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US_0005-ObtenerVuelosDisponibles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/flights?dateFrom=11/02/2022&dateTo=18/02/2022&origin=Puerto Iguazú&destination=Bogotá",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"flights"
+					],
+					"query": [
+						{
+							"key": "dateFrom",
+							"value": "11/02/2022"
+						},
+						{
+							"key": "dateTo",
+							"value": "18/02/2022"
+						},
+						{
+							"key": "origin",
+							"value": "Puerto Iguazú"
+						},
+						{
+							"key": "destination",
+							"value": "Bogotá"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US_0005-ObtenerVuelosDisponibles-ErrorListaVacia",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/flights?dateFrom=09/02/2022&dateTo=20/02/2022&origin=Buenos Aires&destination=Puerto Iguazú",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"flights"
+					],
+					"query": [
+						{
+							"key": "dateFrom",
+							"value": "09/02/2022"
+						},
+						{
+							"key": "dateTo",
+							"value": "20/02/2022"
+						},
+						{
+							"key": "origin",
+							"value": "Buenos Aires"
+						},
+						{
+							"key": "destination",
+							"value": "Puerto Iguazú"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US_0005-ObtenerVuelosDisponibles-ErrorFechas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/flights?dateFrom=18/02/2022&dateTo=18/02/2022&origin=Puerto Iguazú&destination=Bogotá",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"flights"
+					],
+					"query": [
+						{
+							"key": "dateFrom",
+							"value": "18/02/2022"
+						},
+						{
+							"key": "dateTo",
+							"value": "18/02/2022"
+						},
+						{
+							"key": "origin",
+							"value": "Puerto Iguazú"
+						},
+						{
+							"key": "destination",
+							"value": "Bogotá"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US_0006-ReservarVuelo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\":\"arjonamiguel@gmail.com\"\r\n    ,\"flightReservation\":{\r\n        \"dateFrom\":\"12/02/2022\"\r\n        ,\"dateTo\":\"19/02/2022\"\r\n        ,\"origin\":\"Buenos Aires\"\r\n        ,\"destination\":\"Puerto Iguazú\"\r\n        ,\"flightNumber\":\"BAPI-1235\"\r\n        ,\"seats\":2\r\n        ,\"seatType\":\"ECONOMY\"\r\n        ,\"people\":[\r\n            {\r\n                \"dni\":\"12345678\"\r\n                ,\"name\":\"Pepito\"\r\n                ,\"lastname\":\"Gomez\"\r\n                ,\"birthDate\":\"10/11/1982\"\r\n                ,\"mail\":\"arjonamiguel@gmail.com\"\r\n            }\r\n            ,{\r\n                \"dni\":\"12345678\"\r\n                ,\"name\":\"Fulanito\"\r\n                ,\"lastname\":\"Gomez\"\r\n                ,\"birthDate\":\"10/11/1983\"\r\n                ,\"mail\":\"arjonamiguel2@gmail.com\"\r\n            }\r\n        ]\r\n        ,\"paymentMethod\":{\r\n            \"type\":\"CREDIT\"\r\n            ,\"number\":\"1234-1234-1234-1234\"\r\n            ,\"dues\":6\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/flight-reservation",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"flight-reservation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US_0006-ReservarVuelo-ErrorCodigo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\":\"arjonamiguel@gmail.com\"\r\n    ,\"flightReservation\":{\r\n        \"dateFrom\":\"12/02/2022\"\r\n        ,\"dateTo\":\"19/02/2022\"\r\n        ,\"origin\":\"Buenos Aires\"\r\n        ,\"destination\":\"Puerto Iguazú\"\r\n        ,\"flightNumber\":\"CodigoErroneo\"\r\n        ,\"seats\":2\r\n        ,\"seatType\":\"ECONOMY\"\r\n        ,\"people\":[\r\n            {\r\n                \"dni\":\"12345678\"\r\n                ,\"name\":\"Pepito\"\r\n                ,\"lastname\":\"Gomez\"\r\n                ,\"birthDate\":\"10/11/1982\"\r\n                ,\"mail\":\"arjonamiguel@gmail.com\"\r\n            }\r\n            ,{\r\n                \"dni\":\"12345678\"\r\n                ,\"name\":\"Fulanito\"\r\n                ,\"lastname\":\"Gomez\"\r\n                ,\"birthDate\":\"10/11/1983\"\r\n                ,\"mail\":\"arjonamiguel2@gmail.com\"\r\n            }\r\n        ]\r\n        ,\"paymentMethod\":{\r\n            \"type\":\"CREDIT\"\r\n            ,\"number\":\"1234-1234-1234-1234\"\r\n            ,\"dues\":6\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/flight-reservation",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"flight-reservation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "US_0006-ReservarVuelo-ErrorFechas",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"userName\":\"arjonamiguel@gmail.com\"\r\n    ,\"flightReservation\":{\r\n        \"dateFrom\":\"22/02/2022\"\r\n        ,\"dateTo\":\"19/02/2022\"\r\n        ,\"origin\":\"Buenos Aires\"\r\n        ,\"destination\":\"Puerto Iguazú\"\r\n        ,\"flightNumber\":\"BAPI-1235\"\r\n        ,\"seats\":2\r\n        ,\"seatType\":\"ECONOMY\"\r\n        ,\"people\":[\r\n            {\r\n                \"dni\":\"12345678\"\r\n                ,\"name\":\"Pepito\"\r\n                ,\"lastname\":\"Gomez\"\r\n                ,\"birthDate\":\"10/11/1982\"\r\n                ,\"mail\":\"arjonamiguel@gmail.com\"\r\n            }\r\n            ,{\r\n                \"dni\":\"12345678\"\r\n                ,\"name\":\"Fulanito\"\r\n                ,\"lastname\":\"Gomez\"\r\n                ,\"birthDate\":\"10/11/1983\"\r\n                ,\"mail\":\"arjonamiguel2@gmail.com\"\r\n            }\r\n        ]\r\n        ,\"paymentMethod\":{\r\n            \"type\":\"CREDIT\"\r\n            ,\"number\":\"1234-1234-1234-1234\"\r\n            ,\"dues\":6\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/flight-reservation",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"flight-reservation"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
