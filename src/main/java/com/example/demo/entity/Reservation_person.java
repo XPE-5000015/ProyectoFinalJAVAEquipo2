@@ -14,6 +14,6 @@ import javax.persistence.*;
 public class Reservation_person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer Reservation_person;
-    String dni;
+    private Integer Reservation_person;
+    private String dni;
 }
