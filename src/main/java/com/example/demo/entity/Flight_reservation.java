@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
@@ -15,13 +15,13 @@ import java.sql.Date;
 public class Flight_reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer reservation_id;
-    String userName;
-    Date goingDate;
-    Date returnDate;
-    String origin;
-    String destination;
-    String flightNumber;
-    Integer seats;
-    String seatType;
+    private Integer reservation_id;
+    private String userName;
+    private Date goingDate;
+    private Date returnDate;
+    private String origin;
+    private String destination;
+    private String flightNumber;
+    private Integer seats;
+    private String seatType;
 }
