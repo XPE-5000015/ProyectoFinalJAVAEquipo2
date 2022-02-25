@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "reservation_person")
 public class Reservation_person {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer reservation_id;
+    @Id
     private String dni;
 }
