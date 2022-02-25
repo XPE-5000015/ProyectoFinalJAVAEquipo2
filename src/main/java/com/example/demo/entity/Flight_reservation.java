@@ -12,7 +12,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @Entity
 @Table(name = "flight_reservations")
-public class flight_reservation {
+public class Flight_reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer reservation_id;
