@@ -34,10 +34,12 @@ public class HotelsImpl implements Hotels {
      * Obtiene una lista de todos los destinos validos.
      */
     public List<String> obtenerDestinosValidos(){
+/*
         return hotels.stream()
                 .map(Hotel::getDestination)
                 .distinct()
                 .collect(Collectors.toList());
+*/
     }
 
     /**

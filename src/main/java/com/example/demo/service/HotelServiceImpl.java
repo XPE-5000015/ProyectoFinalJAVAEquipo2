@@ -67,26 +67,28 @@ public class HotelServiceImpl implements HotelService {
             throw new NoContentException("El destino elegido no existe.");
         validarTipoHabitacionCantidadPersonas(payloadHotelDTO.getBooking());
         Hotel hotel = hotels.obtenerHotel(payloadHotelDTO.getBooking().getHotelCode());
+/*
         if (hotel.getReserved().equals("SI"))
             throw new ConflictException("Este hotel ya se encuentra reservado.");
+*/
         Period period = Period.between(payloadHotelDTO.getBooking().getDateFrom(), payloadHotelDTO.getBooking().getDateTo());
 
         Double interests = calculaIntereses(payloadHotelDTO.getBooking().getPaymentMethod());
-        double amount = Double.valueOf(hotel.getAmount()) * (period.getDays()-1);
-        Double total = amount * (1 + interests);
+        //double amount = Double.valueOf(hotel.getAmount()) * (period.getDays()-1);
+        //Double total = amount * (1 + interests);
 
         ResponseHotelDTO responseHotelDTO = new ResponseHotelDTO();
         responseHotelDTO.setUserName(payloadHotelDTO.getUsername());
-        responseHotelDTO.setAmount(amount);
+        //responseHotelDTO.setAmount(amount);
         responseHotelDTO.setInterest(interests*100);
-        responseHotelDTO.setTotal(total);
+        //responseHotelDTO.setTotal(total);
         responseHotelDTO.setBooking(transformarBookingPayloadABookingResponse(payloadHotelDTO.getBooking()));
         StatusCodeDTO statusCode = new StatusCodeDTO();
         statusCode.setCode(200);
         statusCode.setMessage("El proceso termino satisfactoriamente.");
         responseHotelDTO.setStatusCode(statusCode);
 
-        hotel.setReserved("SI");
+        //hotel.setReserved("SI");
         return responseHotelDTO;
     }
 
@@ -155,12 +157,14 @@ public class HotelServiceImpl implements HotelService {
         HotelDTO hotelDTO = new HotelDTO();
         hotelDTO.setHotelCode(hotel.getHotelCode());
         hotelDTO.setName(hotel.getName());
+/*
         hotelDTO.setDestination(hotel.getDestination());
         hotelDTO.setRoomType(hotel.getRoomType());
         hotelDTO.setAmount(hotel.getAmount());
         hotelDTO.setDateFrom(hotel.getDateFrom());
         hotelDTO.setDateTo(hotel.getDateTo());
         hotelDTO.setReserved(hotel.getReserved());
+*/
         return hotelDTO;
     }
 }
