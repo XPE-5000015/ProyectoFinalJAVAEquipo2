@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -33,4 +34,7 @@ public class Flight_reservation {
     @ManyToOne
     @JoinColumn(name = "flightNumber", insertable = false, updatable = false)
     private Flight flight;
+
+    @OneToMany(mappedBy = "flight_reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation_person> reservation_people;
 }
