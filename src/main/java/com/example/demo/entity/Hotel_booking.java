@@ -25,4 +25,8 @@ public class Hotel_booking {
     private Integer peopleAmount;
     private String roomType;
     private Integer paymentMethod_id;
+
+    @ManyToOne
+    @JoinColumn(name = "hotelCode", insertable = false, updatable = false)
+    private Hotel hotel;
 }
