@@ -2,10 +2,10 @@ package com.example.demo.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 
 @Data
@@ -23,4 +23,7 @@ public class Flight {
     private Double flightPrice;
     private Date goingDate;
     private Date returnDate;
+
+    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Flight_reservation> flight_reservations;
 }

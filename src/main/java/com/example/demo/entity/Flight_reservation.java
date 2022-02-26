@@ -29,4 +29,8 @@ public class Flight_reservation {
     @ManyToOne
     @JoinColumn(name = "paymentMethod_id", insertable = false, updatable = false)
     private PaymentMethod paymentMethod;
+
+    @ManyToOne
+    @JoinColumn(name = "flightNumber", insertable = false, updatable = false)
+    private Flight flight;
 }
