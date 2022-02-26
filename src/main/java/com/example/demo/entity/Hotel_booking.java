@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -33,4 +34,7 @@ public class Hotel_booking {
     @ManyToOne
     @JoinColumn(name = "paymentMethod_id", insertable = false, updatable = false)
     private PaymentMethod paymentMethod;
+
+    @OneToMany(mappedBy = "hotel_booking", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Booking_person> booking_people;
 }
