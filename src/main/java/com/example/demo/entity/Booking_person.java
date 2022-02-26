@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -19,4 +17,8 @@ public class Booking_person {
     private Integer booking_id;
     @Id
     private String dni;
+
+    @ManyToOne
+    @JoinColumn(name = "dni", insertable = false, updatable = false)
+    private Person person;
 }

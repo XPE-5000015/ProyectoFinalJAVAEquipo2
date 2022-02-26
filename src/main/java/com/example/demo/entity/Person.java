@@ -23,4 +23,7 @@ public class Person
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation_person> reservation_people;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Booking_person> booking_people;
 }
