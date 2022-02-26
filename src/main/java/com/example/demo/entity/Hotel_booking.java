@@ -29,4 +29,8 @@ public class Hotel_booking {
     @ManyToOne
     @JoinColumn(name = "hotelCode", insertable = false, updatable = false)
     private Hotel hotel;
+
+    @ManyToOne
+    @JoinColumn(name = "paymentMethod_id", insertable = false, updatable = false)
+    private PaymentMethod paymentMethod;
 }
