@@ -24,4 +24,9 @@ public class Flight_reservation {
     private String flightNumber;
     private Integer seats;
     private String seatType;
+    private Integer paymentMethod_id;
+
+    @ManyToOne
+    @JoinColumn(name = "paymentMethod_id", insertable = false, updatable = false)
+    private PaymentMethod paymentMethod;
 }

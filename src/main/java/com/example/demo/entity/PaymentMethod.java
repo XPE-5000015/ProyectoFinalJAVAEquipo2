@@ -23,4 +23,7 @@ public class PaymentMethod {
 
     @OneToMany(mappedBy = "paymentMethod", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Hotel_booking> hotel_bookings;
+
+    @OneToMany(mappedBy = "paymentMethod", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Flight_reservation> flight_reservations;
 }
