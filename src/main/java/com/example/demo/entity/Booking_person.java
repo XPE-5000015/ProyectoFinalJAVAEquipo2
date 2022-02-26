@@ -19,6 +19,10 @@ public class Booking_person {
     private String dni;
 
     @ManyToOne
+    @JoinColumn(name = "booking_id", insertable = false, updatable = false)
+    private Hotel_booking hotel_booking;
+
+    @ManyToOne
     @JoinColumn(name = "dni", insertable = false, updatable = false)
     private Person person;
 }
