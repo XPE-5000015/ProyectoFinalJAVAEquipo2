@@ -20,4 +20,8 @@ public class Reservation_person {
     @ManyToOne
     @JoinColumn(name = "reservation_id", insertable = false, updatable = false)
     private Flight_reservation flight_reservation;
+
+    @ManyToOne
+    @JoinColumn(name = "dni", insertable = false, updatable = false)
+    private Person person;
 }
