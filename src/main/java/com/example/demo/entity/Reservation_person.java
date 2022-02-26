@@ -16,4 +16,8 @@ public class Reservation_person {
     private Integer reservation_id;
     @Id
     private String dni;
+
+    @ManyToOne
+    @JoinColumn(name = "reservation_id", insertable = false, updatable = false)
+    private Flight_reservation flight_reservation;
 }
