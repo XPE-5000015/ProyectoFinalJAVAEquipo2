@@ -12,15 +12,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FlightReservationPayloadDTO {
+    private Integer reservationId;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    LocalDate dateFrom;
+    private LocalDate goingDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-    LocalDate dateTo;
-    String origin;
-    String destination;
-    String flightNumber;
-    Integer seats;
-    String seatType;
-    List<PersonDTO> people;
-    PaymentMethodDTO paymentMethod;
+    private LocalDate returnDate;
+    private String origin;
+    private String destination;
+    private String flightNumber;
+    private Integer seats;
+    private String seatType;
+    private List<PersonDTO> people;
+    private PaymentMethodDTO paymentMethod;
 }
