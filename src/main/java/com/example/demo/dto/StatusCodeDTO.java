@@ -8,6 +8,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StatusCodeDTO {
-    Integer code;
-    String message;
+   private String message;
 }
