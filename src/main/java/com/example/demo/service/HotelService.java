@@ -8,7 +8,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface HotelService {
+/*
     List<HotelDTO> obtenerHoteles();
     List<HotelDTO> obtenerHotelesDisponibles(LocalDate dateFrom, LocalDate dateTo, String destination);
     ResponseHotelDTO reservar(PayloadHotelDTO payloadHotelDTO);
+*/
 }

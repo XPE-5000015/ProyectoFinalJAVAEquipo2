@@ -16,12 +16,15 @@ import java.util.List;
 @Service
 public class HotelServiceImpl implements HotelService {
 
+/*
     @Autowired
     Hotels hotels;
 
-    /**
+    */
+/**
      * Obtiene una lista de todos los hoteles disponibles.
-     */
+     *//*
+
     public List<HotelDTO> obtenerHoteles(){
         List<Hotel> hotelList = hotels.obtenerHoteles();
         if (hotelList.isEmpty())
@@ -34,12 +37,14 @@ public class HotelServiceImpl implements HotelService {
         return hotelDTOList;
     }
 
-    /**
+    */
+/**
      * Obtiene una lista de los hoteles disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.
      * @param dateTo La fecha final.
      * @param destination El lugar destino.
-     */
+     *//*
+
     public List<HotelDTO> obtenerHotelesDisponibles(LocalDate dateFrom, LocalDate dateTo, String destination){
         if (dateFrom.compareTo(dateTo) >= 0)
             throw new ConflictException("La fecha de salida debe ser mayor a la de entrada.");
@@ -56,10 +61,12 @@ public class HotelServiceImpl implements HotelService {
         return hotelDTOList;
     }
 
-    /**
+    */
+/**
      * Realiza la reserva de un hotel en base a el objeto payloadHotelDTO.
      * @param payloadHotelDTO Objeto con los datos para realizar una reserva de hotel.
-     */
+     *//*
+
     public ResponseHotelDTO reservar(PayloadHotelDTO payloadHotelDTO){
         if (payloadHotelDTO.getBooking().getDateFrom().compareTo(payloadHotelDTO.getBooking().getDateTo()) >= 0)
             throw new ConflictException("La fecha de salida debe ser mayor a la de entrada.");
@@ -67,10 +74,12 @@ public class HotelServiceImpl implements HotelService {
             throw new NoContentException("El destino elegido no existe.");
         validarTipoHabitacionCantidadPersonas(payloadHotelDTO.getBooking());
         Hotel hotel = hotels.obtenerHotel(payloadHotelDTO.getBooking().getHotelCode());
+*/
 /*
         if (hotel.getReserved().equals("SI"))
             throw new ConflictException("Este hotel ya se encuentra reservado.");
-*/
+*//*
+
         Period period = Period.between(payloadHotelDTO.getBooking().getDateFrom(), payloadHotelDTO.getBooking().getDateTo());
 
         Double interests = calculaIntereses(payloadHotelDTO.getBooking().getPaymentMethod());
@@ -92,10 +101,12 @@ public class HotelServiceImpl implements HotelService {
         return responseHotelDTO;
     }
 
-    /**
+    */
+/**
      * Realiza el calculo de los intereses en base al metodo de pago.
      * @param paymentMethodDTO Objeto con los datos del metodo de pago.
-     */
+     *//*
+
     private Double calculaIntereses(PaymentMethodDTO paymentMethodDTO){
         double interests = 0.0;
         if (paymentMethodDTO.getType().equalsIgnoreCase("CREDIT") && paymentMethodDTO.getDues() > 1){
@@ -117,10 +128,12 @@ public class HotelServiceImpl implements HotelService {
         return interests;
     }
 
-    /**
+    */
+/**
      * Valida que el tipo de habitación seleccionada coincida con la cantidad de personas que se alojarán en ella.
      * @param bookingPayloadDTO Objeto con los datos del tipo de habitación, y cantidad de personas.
-     */
+     *//*
+
     private void validarTipoHabitacionCantidadPersonas(BookingPayloadDTO bookingPayloadDTO){
         String message = "El tipo de habitación seleccionada no coincide con la cantidad de personas que se alojarán en ella.";
         if (bookingPayloadDTO.getRoomType().equalsIgnoreCase("SINGLE") && bookingPayloadDTO.getPeopleAmount() != 1)
@@ -133,10 +146,12 @@ public class HotelServiceImpl implements HotelService {
             throw new ConflictException(message);
     }
 
-    /**
+    */
+/**
      * Transforma de un objeto BookingPayloadDTO a BookingResponseDTO.
      * @param bookingPayloadDTO Objeto con los datos necesarios para hacer la transformación.
-     */
+     *//*
+
     private BookingResponseDTO transformarBookingPayloadABookingResponse(BookingPayloadDTO bookingPayloadDTO){
         BookingResponseDTO bookingResponseDTO = new BookingResponseDTO();
         bookingResponseDTO.setDateFrom(bookingPayloadDTO.getDateFrom());
@@ -149,14 +164,17 @@ public class HotelServiceImpl implements HotelService {
         return bookingResponseDTO;
     }
 
-    /**
+    */
+/**
      * Transforma de un objeto Hotel a HotelDTO.
      * @param hotel Objeto con los datos necesarios para hacer la transformación.
-     */
+     *//*
+
     private HotelDTO transformarHotelAHotelDTO(Hotel hotel){
         HotelDTO hotelDTO = new HotelDTO();
         hotelDTO.setHotelCode(hotel.getHotelCode());
         hotelDTO.setName(hotel.getName());
+*/
 /*
         hotelDTO.setDestination(hotel.getDestination());
         hotelDTO.setRoomType(hotel.getRoomType());
@@ -164,7 +182,9 @@ public class HotelServiceImpl implements HotelService {
         hotelDTO.setDateFrom(hotel.getDateFrom());
         hotelDTO.setDateTo(hotel.getDateTo());
         hotelDTO.setReserved(hotel.getReserved());
-*/
+*//*
+
         return hotelDTO;
     }
+*/
 }
