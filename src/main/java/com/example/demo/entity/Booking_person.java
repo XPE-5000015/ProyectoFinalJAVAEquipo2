@@ -5,13 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Table (name = "booking_person")
-public class Booking_person {
+@IdClass(Booking_person.class)
+public class Booking_person implements Serializable {
 
     @Id
     private Integer booking_id;
