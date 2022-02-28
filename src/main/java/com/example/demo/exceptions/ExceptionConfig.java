@@ -20,7 +20,6 @@ public class ExceptionConfig {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<StatusCodeDTO> notFoundHandler(NotFoundException notFoundException){
         StatusCodeDTO statusCodeDTO = new StatusCodeDTO();
-        statusCodeDTO.setCode(404);
         statusCodeDTO.setMessage(notFoundException.getMessage());
         return new ResponseEntity<>(statusCodeDTO,HttpStatus.NOT_FOUND);
     }
@@ -28,7 +27,7 @@ public class ExceptionConfig {
     @ExceptionHandler(NoContentException.class)
     public ResponseEntity<StatusCodeDTO> noContentHandler(NoContentException noContentException){
         StatusCodeDTO statusCodeDTO = new StatusCodeDTO();
-        statusCodeDTO.setCode(404);
+
         statusCodeDTO.setMessage(noContentException.getMessage());
         //Se evita el uso de HttpStatus.NO_CONTENT para poder mostrar un mensaje de respuesta
         return new ResponseEntity<>(statusCodeDTO,HttpStatus.NOT_FOUND);
@@ -37,7 +36,6 @@ public class ExceptionConfig {
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<StatusCodeDTO> conflictHandler(ConflictException conflictException){
         StatusCodeDTO statusCodeDTO = new StatusCodeDTO();
-        statusCodeDTO.setCode(409);
         statusCodeDTO.setMessage(conflictException.getMessage());
         return new ResponseEntity<>(statusCodeDTO,HttpStatus.CONFLICT);
     }
@@ -48,7 +46,6 @@ public class ExceptionConfig {
         List<ObjectError> errorList = methodArgumentNotValidException.getAllErrors();
         for (ObjectError error : errorList) {
             StatusCodeDTO statusCodeDTO = new StatusCodeDTO();
-            statusCodeDTO.setCode(400);
             statusCodeDTO.setMessage(error.getDefaultMessage());
             statusCodeDTOList.add(statusCodeDTO);
         }
@@ -58,7 +55,7 @@ public class ExceptionConfig {
     @ExceptionHandler(ConversionFailedException.class)
     public ResponseEntity<StatusCodeDTO> conversionFailedHandler(ConversionFailedException conversionFailedException){
         StatusCodeDTO statusCodeDTO = new StatusCodeDTO();
-        statusCodeDTO.setCode(400);
+
         statusCodeDTO.setMessage("Algún valor ingresado no concuerda con el tipo de dato requerido, favor de validarlo");
         if (Objects.requireNonNull(conversionFailedException.getMessage()).contains("DateTimeFormat"))
             statusCodeDTO.setMessage("Formato de fecha debe ser dd/mm/aaaa.");
@@ -68,7 +65,6 @@ public class ExceptionConfig {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<StatusCodeDTO> MessageNotReadableHandler(HttpMessageNotReadableException httpMessageNotReadableException){
         StatusCodeDTO statusCodeDTO = new StatusCodeDTO();
-        statusCodeDTO.setCode(400);
         statusCodeDTO.setMessage("Algún valor ingresado no concuerda con el tipo de dato requerido, favor de validarlo");
         if (Objects.requireNonNull(httpMessageNotReadableException.getMessage()).contains("DateTimeParseException"))
             statusCodeDTO.setMessage("Formato de fecha debe ser dd/mm/aaaa.");
