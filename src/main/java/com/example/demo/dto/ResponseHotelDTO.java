@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseHotelDTO {
-    String userName;
-    Double amount;
-    Double interest;
-    Double total;
-    BookingResponseDTO booking;
-    StatusCodeDTO statusCode;
+    private String userName;
+    private Double amount;
+    private Double interest;
+    private Double total;
+    private BookingResponseDTO booking;
+    private StatusCodeDTO statusCode;
 }
