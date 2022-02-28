@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaymentMethodDTO {
-    String type;
-    String number;
-    Integer dues;
+    private String type;
+    private String number;
+    private Integer dues;
 }
