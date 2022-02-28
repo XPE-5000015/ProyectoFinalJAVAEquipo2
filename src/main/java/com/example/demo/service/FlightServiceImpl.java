@@ -5,6 +5,7 @@ import com.example.demo.entity.Flight;
 import com.example.demo.exceptions.ConflictException;
 import com.example.demo.exceptions.NoContentException;
 import com.example.demo.repository.Flights;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +16,16 @@ import java.util.List;
 @Service
 public class FlightServiceImpl implements FlightService {
 
-/*
     @Autowired
     Flights flights;
 
-    */
+    ModelMapper modelMapper = new ModelMapper();
+
+    public FlightDTO grabarVuelo(FlightDTO flightDTO){
+        Flight flight = flights.save(modelMapper.map(flightDTO, Flight.class));
+        return modelMapper.map(flight, FlightDTO.class);
+    }
+
 /**
      * Obtiene una lista de todos los vuelos disponibles.
      *//*
