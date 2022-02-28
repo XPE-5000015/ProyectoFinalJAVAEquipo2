@@ -15,18 +15,18 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FlightDTO {
-    String flightNumber;
-    String name;
-    String origin;
-    String destination;
-    String seatType;
-    Double flightPrice;
+    private String flightNumber;
+    private String name;
+    private String origin;
+    private String destination;
+    private String seatType;
+    private Double flightPrice;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    LocalDate goingDate;
+    private LocalDate goingDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    LocalDate returnDate;
+    private LocalDate returnDate;
 }
