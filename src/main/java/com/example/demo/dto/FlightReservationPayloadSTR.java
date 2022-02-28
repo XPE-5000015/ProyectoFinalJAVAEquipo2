@@ -10,13 +10,13 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FlightReservationPayloadSTR {
-    String dateFrom;
-    String dateTo;
-    String origin;
-    String destination;
-    String flightNumber;
-    Integer seats;
-    String seatType;
-    List<PersonDTO> people;
-    PaymentMethodDTO paymentMethod;
+    private String dateFrom;
+    private String dateTo;
+    private String origin;
+    private String destination;
+    private String flightNumber;
+    private Integer seats;
+    private String seatType;
+    private List<PersonDTO> people;
+    private PaymentMethodDTO paymentMethod;
 }
