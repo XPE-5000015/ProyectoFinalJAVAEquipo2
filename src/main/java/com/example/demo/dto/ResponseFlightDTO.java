@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ResponseFlightDTO {
-    String userName;
-    Double amount;
-    Double interest;
-    Double total;
-    FlightReservationResponseDTO flightReservation;
-    StatusCodeDTO statusCode;
+    private String userName;
+    private Double amount;
+    private Double interest;
+    private Double total;
+    private FlightReservationResponseDTO flightReservation;
+    private StatusCodeDTO statusCode;
 }
