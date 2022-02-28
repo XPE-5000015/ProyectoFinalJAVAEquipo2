@@ -19,14 +19,14 @@ public class BookingResponseDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    LocalDate dateFrom;
+    private LocalDate dateFrom;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    LocalDate dateTo;
-    String destination;
-    String hotelCode;
-    Integer peopleAmount;
-    String roomType;
-    List<PersonDTO> people;
+    private LocalDate dateTo;
+    private String destination;
+    private String hotelCode;
+    private Integer peopleAmount;
+    private String roomType;
+    private List<PersonDTO> people;
 }
