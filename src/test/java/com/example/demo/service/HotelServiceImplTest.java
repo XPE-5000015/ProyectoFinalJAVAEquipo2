@@ -20,6 +20,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class HotelServiceImplTest {
+/*
 
     @Mock
     Hotels hotels;
@@ -278,4 +279,5 @@ public class HotelServiceImplTest {
 
         return payloadHotelDTO;
     }
+*/
 }

@@ -15,12 +15,15 @@ import java.util.List;
 @Service
 public class FlightServiceImpl implements FlightService {
 
+/*
     @Autowired
     Flights flights;
 
-    /**
+    */
+/**
      * Obtiene una lista de todos los vuelos disponibles.
-     */
+     *//*
+
     public List<FlightDTO> obtenerVuelos(){
         List<Flight> flightList = flights.obtenerVuelos();
         if (flightList.isEmpty())
@@ -33,13 +36,15 @@ public class FlightServiceImpl implements FlightService {
         return flightDTOList;
     }
 
-    /**
+    */
+/**
      * Obtiene una lista de los vuelos disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.
      * @param dateTo La fecha final.
      * @param origin El lugar origen.
      * @param destination El lugar destino.
-     */
+     *//*
+
     public List<FlightDTO> obtenerVuelosDisponibles(LocalDate dateFrom, LocalDate dateTo, String origin, String destination){
         if (dateFrom.compareTo(dateTo) >= 0)
             throw new ConflictException("La fecha inicial no puede ser menor o igual a la fecha final.");
@@ -58,10 +63,12 @@ public class FlightServiceImpl implements FlightService {
         return flightDTOList;
     }
 
-    /**
+    */
+/**
      * Realiza la reserva de un vuelo en base a el objeto payloadFlightDTO.
      * @param payloadFlightDTO Objeto con los datos para realizar una reserva de vuelo.
-     */
+     *//*
+
     public ResponseFlightDTO reservar(PayloadFlightDTO payloadFlightDTO){
         if (payloadFlightDTO.getFlightReservation().getDateFrom().compareTo(payloadFlightDTO.getFlightReservation().getDateTo()) >= 0)
             throw new ConflictException("La fecha inicial no puede ser menor o igual a la fecha final.");
@@ -88,10 +95,12 @@ public class FlightServiceImpl implements FlightService {
         return responseFlightDTO;
     }
 
-    /**
+    */
+/**
      * Transforma de un objeto Flight a FlightDTO.
      * @param flight Objeto con los datos necesarios para hacer la transformación.
-     */
+     *//*
+
     private FlightDTO transformarFlightAFlightDTO(Flight flight){
         FlightDTO flightDTO = new FlightDTO();
         flightDTO.setFlightNumber(flight.getFlightNumber());
@@ -104,10 +113,12 @@ public class FlightServiceImpl implements FlightService {
         return flightDTO;
     }
 
-    /**
+    */
+/**
      * Transforma de un objeto FlightReservationPayloadDTO a FlightReservationResponseDTO.
      * @param flightReservationPayloadDTO Objeto con los datos necesarios para hacer la transformación.
-     */
+     *//*
+
     private FlightReservationResponseDTO transformarFlightReservationPayloadDTOAFlightReservationResponseDTO(FlightReservationPayloadDTO flightReservationPayloadDTO){
         FlightReservationResponseDTO flightReservationResponseDTO = new FlightReservationResponseDTO();
         flightReservationResponseDTO.setDateFrom(flightReservationPayloadDTO.getDateFrom());
@@ -121,10 +132,12 @@ public class FlightServiceImpl implements FlightService {
         return flightReservationResponseDTO;
     }
 
-    /**
+    */
+/**
      * Realiza el calculo de los intereses en base al metodo de pago.
      * @param paymentMethodDTO Objeto con los datos del metodo de pago.
-     */
+     *//*
+
     private Double calculaIntereses(PaymentMethodDTO paymentMethodDTO){
         double interests = 0.0;
         if (paymentMethodDTO.getType().equalsIgnoreCase("CREDIT") && paymentMethodDTO.getDues() > 1){
@@ -145,5 +158,6 @@ public class FlightServiceImpl implements FlightService {
         }
         return interests;
     }
+*/
 
 }

@@ -1,14 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Flight;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.time.LocalDate;
-import java.util.List;
-
-public interface Flights {
-    List<Flight> obtenerVuelos();
-    List<String> obtenerOrigenesValidos();
-    List<String> obtenerDestinosValidos();
-    Flight obtenerVuelo(String flightNumber);
-    List<Flight> obtenerVuelosDisponibles(LocalDate dateFrom, LocalDate dateTo, String origin, String destination);
+public interface Flights extends JpaRepository<Flight, String> {
 }
