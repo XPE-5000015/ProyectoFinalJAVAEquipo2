@@ -13,18 +13,18 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HotelDTO {
-    String hotelCode;
-    String name;
-    String place;
-    String roomType;
-    Double roomPrice;
+    private String hotelCode;
+    private String name;
+    private String place;
+    private String roomType;
+    private Double roomPrice;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    LocalDate disponibilityDateFrom;
+    private LocalDate disponibilityDateFrom;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
-    LocalDate disponibilityDateTo;
-    boolean isBooking;
+    private LocalDate disponibilityDateTo;
+    private boolean isBooking;
 }
