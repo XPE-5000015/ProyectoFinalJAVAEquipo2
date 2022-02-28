@@ -12,7 +12,7 @@ import javax.validation.constraints.Email;
 @NoArgsConstructor
 public class PayloadHotelDTO {
     @Email(regexp = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", message = "Por favor ingrese un e-mail válido.")
-    String username;
+    String userName;
     @Valid
     BookingPayloadDTO booking;
 }
