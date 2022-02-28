@@ -55,7 +55,6 @@ public class ExceptionConfig {
     @ExceptionHandler(ConversionFailedException.class)
     public ResponseEntity<StatusCodeDTO> conversionFailedHandler(ConversionFailedException conversionFailedException){
         StatusCodeDTO statusCodeDTO = new StatusCodeDTO();
-
         statusCodeDTO.setMessage("Algún valor ingresado no concuerda con el tipo de dato requerido, favor de validarlo");
         if (Objects.requireNonNull(conversionFailedException.getMessage()).contains("DateTimeFormat"))
             statusCodeDTO.setMessage("Formato de fecha debe ser dd/mm/aaaa.");
