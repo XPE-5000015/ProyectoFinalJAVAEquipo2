@@ -11,11 +11,11 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PersonDTO {
-    String dni;
-    String name;
-    String lastname;
+    private String dni;
+    private String name;
+    private String lastname;
     @Pattern(regexp = "^(0[1-9]|[12][0-9]|[3][01])/(0[1-9]|1[012])/\\d{4}$",message = "Formato de fecha debe ser dd/mm/aaaa.")
-    String birthDate;
+    private String birthDate;
     @Email(regexp = "^[\\w!#$%&’*+/=?`{|}~^-]+(?:\\.[\\w!#$%&’*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", message = "Por favor ingrese un e-mail válido.")
-    String mail;
+    private String mail;
 }
