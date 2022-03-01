@@ -189,5 +189,22 @@ public class HotelServiceImpl implements HotelService {
 
         return hotelDTO;
     }
+    private Hotel transformarHotelDTOAHotel(HotelDTO hotelDTO){
+        Hotel hotel = new Hotel();
+        hotel.setHotelCode(hotelDTO.getHotelCode());
+        hotel.setName(hotelDTO.getName());
+        hotel.setPlace(hotelDTO.getPlace());
+        hotel.setRoomType(hotelDTO.getRoomType());
+        hotel.setRoomPrice(hotelDTO.getRoomPrice());
+        hotel.setDisponibilityDateFrom(java.util.Date.from(hotelDTO.getDisponibilityDateFrom().atStartOfDay().
+                atZone(ZoneId.systemDefault()).
+                toInstant()));
+        hotel.setDisponibilityDateTo(java.util.Date.from(hotelDTO.getDisponibilityDateTo().atStartOfDay().
+                atZone(ZoneId.systemDefault()).
+                toInstant()));
+        hotel.setIsBooking(hotelDTO.isBooking());
+
+        return hotel;
+    }
 
 }
