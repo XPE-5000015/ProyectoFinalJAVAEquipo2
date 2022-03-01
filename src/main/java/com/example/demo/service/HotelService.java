@@ -8,5 +8,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface HotelService {
-    public HotelDTO grabarHotel(HotelDTO hotelDTO);
+    HotelDTO grabarHotel(HotelDTO hotelDTO);
+    List<HotelDTO> obtenerHoteles();
 }
