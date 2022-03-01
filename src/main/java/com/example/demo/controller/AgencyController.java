@@ -15,14 +15,13 @@ import java.util.List;
 
 @RestController
 public class AgencyController {
-/*
+
 
     @Autowired
     HotelService hotelService;
     @Autowired
     FlightService flightService;
 
-    */
 /**
      * Obtiene una lista de todos los hoteles disponibles, o una lista de los hoteles disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.
@@ -49,6 +48,15 @@ public class AgencyController {
     }
 
     */
+
+    /**
+     * Genera el alta de un nuevo vuelo.
+     * @param flightDTO Objeto con los datos para realizar un alta de un nuevo vuelo.
+     */
+    @PostMapping("/api/v1/flights/new")
+    public ResponseEntity<FlightDTO> grabarVuelo(@RequestBody @Valid FlightDTO flightDTO){
+        return new ResponseEntity<>(flightService.grabarVuelo(flightDTO), HttpStatus.OK);
+    }
 /**
      * Obtiene una lista de todos los vuelos disponibles, o una lista de los vuelos disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.
