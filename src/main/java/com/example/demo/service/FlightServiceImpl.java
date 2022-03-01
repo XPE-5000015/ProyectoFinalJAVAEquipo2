@@ -124,6 +124,23 @@ public class FlightServiceImpl implements FlightService {
                 .toLocalDate());
         return flightDTO;
     }
+    private Flight transformarFlightDTOAFlight(FlightDTO flightDTO){
+        Flight flight = new Flight();
+        flight.setFlightNumber(flightDTO.getFlightNumber());
+        flight.setName(flightDTO.getName());
+        flight.setOrigin(flightDTO.getOrigin());
+        flight.setDestination(flightDTO.getDestination());
+        flight.setSeatType(flightDTO.getSeatType());
+        flight.setFlightPrice(flightDTO.getFlightPrice());
+        flight.setGoingDate(java.util.Date.from(flightDTO.getGoingDate().atStartOfDay().
+                atZone(ZoneId.systemDefault()).
+                toInstant()));
+        flight.setReturnDate(java.util.Date.from(flightDTO.getReturnDate().atStartOfDay().
+                atZone(ZoneId.systemDefault()).
+                toInstant()));
+
+        return flight;
+    }
 
 
 /**
