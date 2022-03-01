@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.dto.*;
 import com.example.demo.entity.Flight;
+import com.example.demo.entity.Hotel;
 import com.example.demo.exceptions.ConflictException;
 import com.example.demo.exceptions.NoContentException;
 import com.example.demo.repository.Flights;
@@ -123,6 +124,23 @@ public class FlightServiceImpl implements FlightService {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate());
         return flightDTO;
+    }
+    private Flight transformarFlightDTOAFlight(FlightDTO flightDTO){
+        Flight flight = new Flight();
+        flight.setFlightNumber(flightDTO.getFlightNumber());
+        flight.setName(flightDTO.getName());
+        flight.setOrigin(flightDTO.getOrigin());
+        flight.setDestination(flightDTO.getDestination());
+        flight.setSeatType(flightDTO.getSeatType());
+        flight.setFlightPrice(flightDTO.getFlightPrice());
+        flight.setGoingDate(java.util.Date.from(flightDTO.getGoingDate().atStartOfDay().
+                atZone(ZoneId.systemDefault()).
+                toInstant()));
+        flight.setReturnDate(java.util.Date.from(flightDTO.getReturnDate().atStartOfDay().
+                atZone(ZoneId.systemDefault()).
+                toInstant()));
+
+        return flight;
     }
 
 
