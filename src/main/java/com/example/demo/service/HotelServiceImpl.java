@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -168,23 +169,25 @@ public class HotelServiceImpl implements HotelService {
 /**
      * Transforma de un objeto Hotel a HotelDTO.
      * @param hotel Objeto con los datos necesarios para hacer la transformación.
-     *//*
+     */
 
     private HotelDTO transformarHotelAHotelDTO(Hotel hotel){
         HotelDTO hotelDTO = new HotelDTO();
         hotelDTO.setHotelCode(hotel.getHotelCode());
         hotelDTO.setName(hotel.getName());
-*/
-/*
-        hotelDTO.setDestination(hotel.getDestination());
+
+        hotelDTO.setPlace(hotel.getPlace());
         hotelDTO.setRoomType(hotel.getRoomType());
-        hotelDTO.setAmount(hotel.getAmount());
-        hotelDTO.setDateFrom(hotel.getDateFrom());
-        hotelDTO.setDateTo(hotel.getDateTo());
-        hotelDTO.setReserved(hotel.getReserved());
-*//*
+        hotelDTO.setRoomPrice(hotel.getRoomPrice());
+        hotelDTO.setDisponibilityDateFrom(hotel.getDisponibilityDateFrom().toInstant().
+                atZone(ZoneId.systemDefault()).
+                toLocalDate());
+        hotelDTO.setDisponibilityDateTo(hotel.getDisponibilityDateTo().toInstant().
+                atZone(ZoneId.systemDefault()).
+                toLocalDate());
+        hotelDTO.setBooking(hotel.getIsBooking());
 
         return hotelDTO;
     }
-*/
+
 }
