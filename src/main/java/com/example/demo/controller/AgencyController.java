@@ -71,7 +71,7 @@ public class AgencyController {
      * @param flightDTO Objeto con los datos para realizar un alta de un nuevo vuelo.
      */
     @PostMapping("/api/v1/flights/new")
-    public ResponseEntity<FlightDTO> grabarVuelo(@RequestBody @Valid FlightDTO flightDTO){
+    public ResponseEntity<StatusCodeDTO> grabarVuelo(@RequestBody @Valid FlightDTO flightDTO){
         return new ResponseEntity<>(flightService.grabarVuelo(flightDTO), HttpStatus.OK);
     }
 /**
