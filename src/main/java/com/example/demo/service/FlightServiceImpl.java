@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,21 +106,26 @@ public class FlightServiceImpl implements FlightService {
 /**
      * Transforma de un objeto Flight a FlightDTO.
      * @param flight Objeto con los datos necesarios para hacer la transformación.
-     *//*
+     */
 
     private FlightDTO transformarFlightAFlightDTO(Flight flight){
         FlightDTO flightDTO = new FlightDTO();
         flightDTO.setFlightNumber(flight.getFlightNumber());
+        flightDTO.setName(flight.getName());
         flightDTO.setOrigin(flight.getOrigin());
         flightDTO.setDestination(flight.getDestination());
         flightDTO.setSeatType(flight.getSeatType());
-        flightDTO.setAmount(flight.getAmount());
-        flightDTO.setDateFrom(flight.getDateFrom());
-        flightDTO.setDateTo(flight.getDateTo());
+        flightDTO.setFlightPrice(flight.getFlightPrice());
+        flightDTO.setGoingDate(flight.getGoingDate().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate());
+        flightDTO.setReturnDate(flight.getReturnDate().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate());
         return flightDTO;
     }
 
-    */
+
 /**
      * Transforma de un objeto FlightReservationPayloadDTO a FlightReservationResponseDTO.
      * @param flightReservationPayloadDTO Objeto con los datos necesarios para hacer la transformación.
