@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 import com.example.demo.dto.*;
+import com.example.demo.entity.Hotel;
 import com.example.demo.service.FlightService;
 import com.example.demo.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,12 @@ public class AgencyController {
     @PostMapping("/api/v1/hotels/new")
     public ResponseEntity<HotelDTO> grabarHotel(@RequestBody @Valid HotelDTO hotelDTO){
         return new ResponseEntity<>(hotelService.grabarHotel(hotelDTO), HttpStatus.OK);
+    }
+
+    @GetMapping("/api/v1/hotels")
+    public ResponseEntity<List <Hotel>> mostrarHoteles()
+    {
+        return new ResponseEntity<>(hotelService.obtenerHoteles(), HttpStatus.OK);
     }
 
 /**
