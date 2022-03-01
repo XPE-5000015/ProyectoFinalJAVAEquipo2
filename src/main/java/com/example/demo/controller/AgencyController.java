@@ -26,7 +26,7 @@ public class AgencyController {
      * @param hotelDTO Objeto con los datos para realizar un alta de un nuevo vuelo.
      */
     @PostMapping("/api/v1/hotels/new")
-    public ResponseEntity<HotelDTO> grabarHotel(@RequestBody @Valid HotelDTO hotelDTO){
+    public ResponseEntity<StatusCodeDTO> grabarHotel(@RequestBody @Valid HotelDTO hotelDTO){
         return new ResponseEntity<>(hotelService.grabarHotel(hotelDTO), HttpStatus.OK);
     }
 
