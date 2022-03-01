@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 import com.example.demo.dto.*;
-import com.example.demo.entity.Hotel;
 import com.example.demo.service.FlightService;
 import com.example.demo.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,7 @@ public class AgencyController {
      * Muestra todos los hoteles registrados en la BD.
      */
     @GetMapping("/api/v1/hotels")
-    public ResponseEntity<List <Hotel>> mostrarHoteles()
+    public ResponseEntity<List<HotelDTO>> mostrarHoteles()
     {
         return new ResponseEntity<>(hotelService.obtenerHoteles(), HttpStatus.OK);
     }

@@ -33,19 +33,12 @@ public class HotelServiceImpl implements HotelService {
         Hotel hotelSaved = hotels.save(hotel);
         return transformarHotelAHotelDTO(hotelSaved);
     }
-    /**
-     * Genera la consulta de todos los hoteles registrados.
-     */
-    public List <Hotel> obtenerHoteles()
-    {
-        return hotels.findAll();
-    }
 /**
      * Obtiene una lista de todos los hoteles disponibles.
-     *//*
+     */
 
     public List<HotelDTO> obtenerHoteles(){
-        List<Hotel> hotelList = hotels.obtenerHoteles();
+        List<Hotel> hotelList = hotels.findAll();
         if (hotelList.isEmpty())
             throw new NoContentException("No se encontraron hoteles.");
         List<HotelDTO> hotelDTOList = new ArrayList<>();
@@ -55,8 +48,6 @@ public class HotelServiceImpl implements HotelService {
         }
         return hotelDTOList;
     }
-
-    */
 /**
      * Obtiene una lista de los hoteles disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.
@@ -193,7 +184,6 @@ public class HotelServiceImpl implements HotelService {
         HotelDTO hotelDTO = new HotelDTO();
         hotelDTO.setHotelCode(hotel.getHotelCode());
         hotelDTO.setName(hotel.getName());
-
         hotelDTO.setPlace(hotel.getPlace());
         hotelDTO.setRoomType(hotel.getRoomType());
         hotelDTO.setRoomPrice(hotel.getRoomPrice());
