@@ -20,11 +20,16 @@ public class FlightServiceImpl implements FlightService {
     @Autowired
     Flights flights;
 
-    ModelMapper modelMapper = new ModelMapper();
-
+    /**
+     * Genera el alta de un nuevo vuelo.
+     * @param flightDTO Objeto con los datos para realizar un alta de un nuevo vuelo.
+     */
     public FlightDTO grabarVuelo(FlightDTO flightDTO){
-        Flight flight = flights.save(modelMapper.map(flightDTO, Flight.class));
-        return modelMapper.map(flight, FlightDTO.class);
+        if (flights.existsById(flightDTO.getFlightNumber()))
+            throw new ConflictException("Este numero de vuelo ya existe.");
+        Flight flight = transformarFlightDTOAFlight(flightDTO);
+        Flight flightSaved = flights.save(flight);
+        return transformarFlightAFlightDTO(flightSaved);
     }
 
 /**
