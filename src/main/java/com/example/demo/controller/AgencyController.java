@@ -1,7 +1,5 @@
 package com.example.demo.controller;
-
 import com.example.demo.dto.*;
-import com.example.demo.entity.Hotel;
 import com.example.demo.service.FlightService;
 import com.example.demo.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
