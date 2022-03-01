@@ -17,11 +17,22 @@ import java.util.List;
 @Service
 public class HotelServiceImpl implements HotelService {
 
-/*
+
     @Autowired
     Hotels hotels;
 
-    */
+    /**
+     * Genera el alta de un nuevo hotel.
+     * @param hotelDTO Objeto con los datos para realizar un alta de un nuevo hotel.
+     */
+    public HotelDTO grabarHotel(HotelDTO hotelDTO)
+    {
+        if(hotels.existsById(hotelDTO.getHotelCode()))
+            throw new ConflictException("Este Codigo de hotel ya existe.");
+        Hotel hotel = transformarHotelDTOAHotel(hotelDTO);
+        Hotel hotelSaved = hotels.save(hotel);
+        return transformarHotelAHotelDTO(hotelSaved);
+    }
 /**
      * Obtiene una lista de todos los hoteles disponibles.
      *//*
