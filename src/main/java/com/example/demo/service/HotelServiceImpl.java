@@ -33,7 +33,9 @@ public class HotelServiceImpl implements HotelService {
         Hotel hotelSaved = hotels.save(hotel);
         return transformarHotelAHotelDTO(hotelSaved);
     }
-
+    /**
+     * Genera la consulta de todos los hoteles registrados.
+     */
     public List <Hotel> todosHoteles()
     {
         return hotels.findAll();
