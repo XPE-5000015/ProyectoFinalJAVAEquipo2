@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.dto.*;
 import com.example.demo.entity.Flight;
-import com.example.demo.entity.Hotel;
 import com.example.demo.exceptions.ConflictException;
 import com.example.demo.exceptions.NoContentException;
 import com.example.demo.repository.Flights;
