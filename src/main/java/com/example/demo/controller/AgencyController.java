@@ -31,6 +31,9 @@ public class AgencyController {
         return new ResponseEntity<>(hotelService.grabarHotel(hotelDTO), HttpStatus.OK);
     }
 
+    /**
+     * Muestra todos los hoteles registrados en la BD.
+     */
     @GetMapping("/api/v1/hotels")
     public ResponseEntity<List <Hotel>> mostrarHoteles()
     {
