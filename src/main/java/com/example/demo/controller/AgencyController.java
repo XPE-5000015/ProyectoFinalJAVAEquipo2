@@ -30,6 +30,11 @@ public class AgencyController {
         return new ResponseEntity<>(hotelService.grabarHotel(hotelDTO), HttpStatus.OK);
     }
 
+    @GetMapping("/api/v1/hotels")
+    public ResponseEntity<?> mostrarHoteles()
+    {
+        return new ResponseEntity<>(hotelService.todosHoteles(), HttpStatus.OK);
+    }
 /**
      * Obtiene una lista de todos los hoteles disponibles, o una lista de los hoteles disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.
