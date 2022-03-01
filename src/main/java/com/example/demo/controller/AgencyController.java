@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dto.*;
+import com.example.demo.entity.Hotel;
 import com.example.demo.service.FlightService;
 import com.example.demo.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,15 @@ public class AgencyController {
     HotelService hotelService;
     @Autowired
     FlightService flightService;
+
+    /**
+     * Genera un Alta de hotel.
+     * @param hotelDTO Objeto con los datos para realizar un alta de un nuevo vuelo.
+     */
+    @PostMapping("/api/v1/hotels/new")
+    public ResponseEntity<HotelDTO> grabarHotel(@RequestBody @Valid HotelDTO hotelDTO){
+        return new ResponseEntity<>(hotelService.grabarHotel(hotelDTO), HttpStatus.OK);
+    }
 
 /**
      * Obtiene una lista de todos los hoteles disponibles, o una lista de los hoteles disponibles filtrando en base a los parametros.
