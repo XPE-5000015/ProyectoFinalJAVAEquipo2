@@ -1,24 +1,38 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.*;
-import com.example.demo.entity.Flight;
+import com.example.demo.entity.*;
 import com.example.demo.exceptions.ConflictException;
 import com.example.demo.exceptions.NoContentException;
-import com.example.demo.repository.Flights;
-import org.modelmapper.ModelMapper;
+import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightServiceImpl implements FlightService {
 
     @Autowired
     Flights flights;
+
+    @Autowired
+    Flight_reservations flight_reservations;
+
+    @Autowired
+    PaymentMethods paymentMethods;
+
+    @Autowired
+    People  people;
+
+    @Autowired
+    Reservation_people reservation_people;
 
     /**
      * Genera el alta de un nuevo vuelo.
@@ -79,40 +93,109 @@ public class FlightServiceImpl implements FlightService {
 /**
      * Realiza la reserva de un vuelo en base a el objeto payloadFlightDTO.
      * @param payloadFlightDTO Objeto con los datos para realizar una reserva de vuelo.
-     *//*
+     */
 
-    public ResponseFlightDTO reservar(PayloadFlightDTO payloadFlightDTO){
-        if (payloadFlightDTO.getFlightReservation().getDateFrom().compareTo(payloadFlightDTO.getFlightReservation().getDateTo()) >= 0)
+    public StatusCodeDTO reservar(PayloadFlightDTO payloadFlightDTO){
+        if (payloadFlightDTO.getFlightReservation().getGoingDate().compareTo(payloadFlightDTO.getFlightReservation().getReturnDate()) >= 0)
             throw new ConflictException("La fecha inicial no puede ser menor o igual a la fecha final.");
-        if (!flights.obtenerOrigenesValidos().contains(payloadFlightDTO.getFlightReservation().getOrigin()))
+
+        List<Flight> flightsList = flights.findAll();
+        List<String> origenes = flightsList.stream()
+                .map(Flight::getOrigin)
+                .distinct()
+                .collect(Collectors.toList());
+        List<String> destinos = flightsList.stream()
+                .map(Flight::getDestination)
+                .distinct()
+                .collect(Collectors.toList());
+
+        if (!origenes.contains(payloadFlightDTO.getFlightReservation().getOrigin()))
             throw new NoContentException("El origen elegido no existe.");
-        if (!flights.obtenerDestinosValidos().contains(payloadFlightDTO.getFlightReservation().getDestination()))
+        if (!destinos.contains(payloadFlightDTO.getFlightReservation().getDestination()))
             throw new NoContentException("El destino elegido no existe.");
-        Flight flight = flights.obtenerVuelo(payloadFlightDTO.getFlightReservation().getFlightNumber());
+        Flight flight = flights.getById(payloadFlightDTO.getFlightReservation().getFlightNumber());
 
         Double interests = calculaIntereses(payloadFlightDTO.getFlightReservation().getPaymentMethod());
-        double amount = flight.getAmount() * payloadFlightDTO.getFlightReservation().getSeats();
+        double amount = flight.getFlightPrice() * payloadFlightDTO.getFlightReservation().getSeats();
         Double total = amount * (1 + interests);
 
-        ResponseFlightDTO responseFlightDTO = new ResponseFlightDTO();
-        responseFlightDTO.setUserName(payloadFlightDTO.getUserName());
-        responseFlightDTO.setAmount(amount);
-        responseFlightDTO.setInterest(4.5);
-        responseFlightDTO.setTotal(total);
-        responseFlightDTO.setFlightReservation(transformarFlightReservationPayloadDTOAFlightReservationResponseDTO(payloadFlightDTO.getFlightReservation()));
+        PaymentMethod paymentMethodSaved = savePaymentMethod(payloadFlightDTO.getFlightReservation().getPaymentMethod());
+
+        Flight_reservation flight_reservationSaved = saveFlight_reservation(payloadFlightDTO, paymentMethodSaved.getPaymentMethod_id());
+
+        List<PersonDTO> personDTOList = payloadFlightDTO.getFlightReservation().getPeople();
+        List<Person> personList = new ArrayList<>();
+        for (PersonDTO personDTO : personDTOList) {
+            personList.add(transformarPersonDTOAPerson(personDTO));
+        }
+
+        savePeople(personList, flight_reservationSaved.getReservation_id());
+
         StatusCodeDTO statusCodeDTO = new StatusCodeDTO();
-        statusCodeDTO.setCode(200);
-        statusCodeDTO.setMessage("El proceso termino satisfactoriamente.");
-        responseFlightDTO.setStatusCode(statusCodeDTO);
-        return responseFlightDTO;
+        statusCodeDTO.setMessage("Reserva de vuelo dada de alta correctamente.");
+        return statusCodeDTO;
     }
 
-    */
-/**
+
+    /**
+     * Graba el metodo de pago.
+     * @param paymentMethodDTO Objeto con los datos necesarios guardar el metodo de pago.
+     */
+    private PaymentMethod savePaymentMethod(PaymentMethodDTO paymentMethodDTO){
+        PaymentMethod paymentMethod = new PaymentMethod();
+        paymentMethod.setType(paymentMethod.getType());
+        paymentMethod.setNumber(paymentMethod.getNumber());
+        paymentMethod.setDues(paymentMethod.getDues());
+        return paymentMethods.save(paymentMethod);
+    }
+
+    /**
+     * Graba el metodo de pago.
+     * @param personList Objeto con los datos necesarios guardar el metodo de pago.
+     * @param reservation_id Id de la reservación.
+     */
+    private void savePeople(List<Person> personList, Integer reservation_id){
+        for (Person person : personList) {
+            if (!people.existsById(person.getDni()))
+                people.save(person);
+            Reservation_person reservation_person = new Reservation_person();
+            reservation_person.setReservation_id(reservation_id);
+            reservation_person.setDni(person.getDni());
+            reservation_people.save(reservation_person);
+        }
+    }
+
+    /**
+     * Graba la reserva del vuelo.
+     * @param payloadFlightDTO Objeto con los datos necesarios guardar la reserva del vuelo.
+     * @param paymentMethod_id Id del método de pago.
+     */
+    private Flight_reservation saveFlight_reservation(PayloadFlightDTO payloadFlightDTO, Integer paymentMethod_id){
+        Flight_reservation flight_reservation = new Flight_reservation();
+        flight_reservation.setUserName(payloadFlightDTO.getUserName());
+        flight_reservation.setGoingDate(java.util.Date.from(
+                payloadFlightDTO.getFlightReservation().getGoingDate()
+                        .atStartOfDay()
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()));
+        flight_reservation.setReturnDate(java.util.Date.from(
+                payloadFlightDTO.getFlightReservation().getReturnDate()
+                        .atStartOfDay()
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()));
+        flight_reservation.setOrigin(payloadFlightDTO.getFlightReservation().getOrigin());
+        flight_reservation.setDestination(payloadFlightDTO.getFlightReservation().getDestination());
+        flight_reservation.setFlightNumber(payloadFlightDTO.getFlightReservation().getFlightNumber());
+        flight_reservation.setSeats(payloadFlightDTO.getFlightReservation().getSeats());
+        flight_reservation.setSeatType(payloadFlightDTO.getFlightReservation().getSeatType());
+        flight_reservation.setPaymentMethod_id(paymentMethod_id);
+        return flight_reservations.save(flight_reservation);
+    }
+
+    /**
      * Transforma de un objeto Flight a FlightDTO.
      * @param flight Objeto con los datos necesarios para hacer la transformación.
      */
-
     private FlightDTO transformarFlightAFlightDTO(Flight flight){
         FlightDTO flightDTO = new FlightDTO();
         flightDTO.setFlightNumber(flight.getFlightNumber());
@@ -129,6 +212,30 @@ public class FlightServiceImpl implements FlightService {
                 .toLocalDate());
         return flightDTO;
     }
+
+    /**
+     * Transforma de un objeto PersonDTO a Person.
+     * @param personDTO Objeto con los datos necesarios para hacer la transformación.
+     */
+    private Person transformarPersonDTOAPerson(PersonDTO personDTO){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        Person person = new Person();
+        person.setDni(personDTO.getDni());
+        person.setName(personDTO.getName());
+        person.setLastname(personDTO.getLastname());
+        try {
+            person.setBirthDate(formatter.parse(personDTO.getBirthDate()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        person.setMail(personDTO.getMail());
+        return person;
+    }
+
+    /**
+     * Transforma de un objeto FlightDTO a Flight.
+     * @param flightDTO Objeto con los datos necesarios para hacer la transformación.
+     */
     private Flight transformarFlightDTOAFlight(FlightDTO flightDTO){
         Flight flight = new Flight();
         flight.setFlightNumber(flightDTO.getFlightNumber());
@@ -170,7 +277,7 @@ public class FlightServiceImpl implements FlightService {
 /**
      * Realiza el calculo de los intereses en base al metodo de pago.
      * @param paymentMethodDTO Objeto con los datos del metodo de pago.
-     *//*
+     */
 
     private Double calculaIntereses(PaymentMethodDTO paymentMethodDTO){
         double interests = 0.0;
@@ -192,6 +299,4 @@ public class FlightServiceImpl implements FlightService {
         }
         return interests;
     }
-*/
-
 }
