@@ -32,6 +32,14 @@ public class FlightServiceImpl implements FlightService {
         return transformarFlightAFlightDTO(flightSaved);
     }
 
+    /**
+     * Genera la consulta de todos los hoteles registrados.
+     */
+    public List <Flight> todosVuelos()
+    {
+        return flights.findAll();
+    }
+
 /**
      * Obtiene una lista de todos los vuelos disponibles.
      *//*
