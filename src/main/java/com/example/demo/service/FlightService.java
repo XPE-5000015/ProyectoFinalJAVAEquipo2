@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface FlightService {
     StatusCodeDTO grabarVuelo(FlightDTO flightDTO);
+    List<FlightDTO> obtenerVuelos();
 }

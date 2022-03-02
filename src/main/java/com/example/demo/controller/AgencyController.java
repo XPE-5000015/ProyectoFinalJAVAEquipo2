@@ -39,6 +39,15 @@ public class AgencyController {
         return new ResponseEntity<>(hotelService.obtenerHoteles(), HttpStatus.OK);
     }
 
+    /**
+     * Muestra todos los hoteles registrados en la BD.
+     */
+    @GetMapping("/api/v1/flights")
+    public ResponseEntity<List<FlightDTO>> mostrarVuelos()
+    {
+        return new ResponseEntity<>(flightService.obtenerVuelos(), HttpStatus.OK);
+    }
+
 /**
      * Obtiene una lista de todos los hoteles disponibles, o una lista de los hoteles disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.
