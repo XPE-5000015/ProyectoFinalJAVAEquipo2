@@ -17,17 +17,28 @@ import java.util.List;
 @Service
 public class HotelServiceImpl implements HotelService {
 
-/*
+
     @Autowired
     Hotels hotels;
 
-    */
+    /**
+     * Genera el alta de un nuevo hotel.
+     * @param hotelDTO Objeto con los datos para realizar un alta de un nuevo hotel.
+     */
+    public StatusCodeDTO grabarHotel(HotelDTO hotelDTO)
+    {
+        if(hotels.existsById(hotelDTO.getHotelCode()))
+            throw new ConflictException("Este Codigo de hotel ya existe.");
+        Hotel hotel = transformarHotelDTOAHotel(hotelDTO);
+        hotels.save(hotel);
+        return new StatusCodeDTO("Hotel dado de alta");
+    }
 /**
      * Obtiene una lista de todos los hoteles disponibles.
-     *//*
+     */
 
     public List<HotelDTO> obtenerHoteles(){
-        List<Hotel> hotelList = hotels.obtenerHoteles();
+        List<Hotel> hotelList = hotels.findAll();
         if (hotelList.isEmpty())
             throw new NoContentException("No se encontraron hoteles.");
         List<HotelDTO> hotelDTOList = new ArrayList<>();
@@ -37,8 +48,6 @@ public class HotelServiceImpl implements HotelService {
         }
         return hotelDTOList;
     }
-
-    */
 /**
      * Obtiene una lista de los hoteles disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.
@@ -175,7 +184,6 @@ public class HotelServiceImpl implements HotelService {
         HotelDTO hotelDTO = new HotelDTO();
         hotelDTO.setHotelCode(hotel.getHotelCode());
         hotelDTO.setName(hotel.getName());
-
         hotelDTO.setPlace(hotel.getPlace());
         hotelDTO.setRoomType(hotel.getRoomType());
         hotelDTO.setRoomPrice(hotel.getRoomPrice());

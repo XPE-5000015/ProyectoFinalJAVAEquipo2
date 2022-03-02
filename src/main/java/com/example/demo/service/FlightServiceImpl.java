@@ -38,20 +38,33 @@ public class FlightServiceImpl implements FlightService {
      * Genera el alta de un nuevo vuelo.
      * @param flightDTO Objeto con los datos para realizar un alta de un nuevo vuelo.
      */
-    public FlightDTO grabarVuelo(FlightDTO flightDTO){
+    public StatusCodeDTO grabarVuelo(FlightDTO flightDTO){
         if (flights.existsById(flightDTO.getFlightNumber()))
             throw new ConflictException("Este numero de vuelo ya existe.");
         Flight flight = transformarFlightDTOAFlight(flightDTO);
-        Flight flightSaved = flights.save(flight);
-        return transformarFlightAFlightDTO(flightSaved);
+        flights.save(flight);
+        return new StatusCodeDTO("Vuelo dado de alta correctamente");
     }
 
-/**
+    /**
+     * Edita un vuelo basado en su FlightNumber.
+     * @param flightDTO Objeto con los datos para editar un vuelo.
+     */
+    public StatusCodeDTO editarVuelo(FlightDTO flightDTO){
+        if (!flights.existsById(flightDTO.getFlightNumber()))
+            throw new ConflictException("Este numero de vuelo no existe.");
+        Flight flight = transformarFlightDTOAFlight(flightDTO);
+        flight.setFlight_reservations(null);
+        flights.save(flight);
+        return new StatusCodeDTO("Vuelo modificado correctamente");
+    }
+
+    /**
      * Obtiene una lista de todos los vuelos disponibles.
-     *//*
+     */
 
     public List<FlightDTO> obtenerVuelos(){
-        List<Flight> flightList = flights.obtenerVuelos();
+        List<Flight> flightList = flights.findAll();
         if (flightList.isEmpty())
             throw new NoContentException("No se encontraron vuelos.");
         List<FlightDTO> flightDTOList = new ArrayList<>();
@@ -61,8 +74,6 @@ public class FlightServiceImpl implements FlightService {
         }
         return flightDTOList;
     }
-
-    */
 /**
      * Obtiene una lista de los vuelos disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.

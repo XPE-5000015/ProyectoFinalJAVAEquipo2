@@ -1,5 +1,4 @@
 package com.example.demo.controller;
-
 import com.example.demo.dto.*;
 import com.example.demo.service.FlightService;
 import com.example.demo.service.HotelService;
@@ -21,6 +20,33 @@ public class AgencyController {
     HotelService hotelService;
     @Autowired
     FlightService flightService;
+
+    /**
+     * Genera un Alta de hotel.
+     * @param hotelDTO Objeto con los datos para realizar un alta de un nuevo vuelo.
+     */
+    @PostMapping("/api/v1/hotels/new")
+    public ResponseEntity<StatusCodeDTO> grabarHotel(@RequestBody @Valid HotelDTO hotelDTO){
+        return new ResponseEntity<>(hotelService.grabarHotel(hotelDTO), HttpStatus.OK);
+    }
+
+    /**
+     * Muestra todos los hoteles registrados en la BD.
+     */
+    @GetMapping("/api/v1/hotels")
+    public ResponseEntity<List<HotelDTO>> mostrarHoteles()
+    {
+        return new ResponseEntity<>(hotelService.obtenerHoteles(), HttpStatus.OK);
+    }
+
+    /**
+     * Muestra todos los hoteles registrados en la BD.
+     */
+    @GetMapping("/api/v1/flights")
+    public ResponseEntity<List<FlightDTO>> mostrarVuelos()
+    {
+        return new ResponseEntity<>(flightService.obtenerVuelos(), HttpStatus.OK);
+    }
 
 /**
      * Obtiene una lista de todos los hoteles disponibles, o una lista de los hoteles disponibles filtrando en base a los parametros.
@@ -54,10 +80,20 @@ public class AgencyController {
      * @param flightDTO Objeto con los datos para realizar un alta de un nuevo vuelo.
      */
     @PostMapping("/api/v1/flights/new")
-    public ResponseEntity<FlightDTO> grabarVuelo(@RequestBody @Valid FlightDTO flightDTO){
+    public ResponseEntity<StatusCodeDTO> grabarVuelo(@RequestBody @Valid FlightDTO flightDTO){
         return new ResponseEntity<>(flightService.grabarVuelo(flightDTO), HttpStatus.OK);
     }
-/**
+
+    /**
+     * Edita un vuelo basado en su FlightNumber.
+     * @param flightDTO Objeto con los datos para editar un vuelo.
+     */
+    @PostMapping("/api/v1/flights/new")
+    public ResponseEntity<StatusCodeDTO> editarVuelo(@RequestBody @Valid FlightDTO flightDTO){
+        return new ResponseEntity<>(flightService.editarVuelo(flightDTO), HttpStatus.OK);
+    }
+
+    /**
      * Obtiene una lista de todos los vuelos disponibles, o una lista de los vuelos disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.
      * @param dateTo La fecha final.
