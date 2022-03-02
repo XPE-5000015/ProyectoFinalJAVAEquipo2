@@ -34,10 +34,10 @@ public class FlightServiceImpl implements FlightService {
 
 /**
      * Obtiene una lista de todos los vuelos disponibles.
-     *//*
+     */
 
     public List<FlightDTO> obtenerVuelos(){
-        List<Flight> flightList = flights.obtenerVuelos();
+        List<Flight> flightList = flights.findAll();
         if (flightList.isEmpty())
             throw new NoContentException("No se encontraron vuelos.");
         List<FlightDTO> flightDTOList = new ArrayList<>();
@@ -47,8 +47,6 @@ public class FlightServiceImpl implements FlightService {
         }
         return flightDTOList;
     }
-
-    */
 /**
      * Obtiene una lista de los vuelos disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.
