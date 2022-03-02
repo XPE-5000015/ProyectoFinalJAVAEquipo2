@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
-import java.util.stream.Collectors;
 
 @Service
 public class HotelServiceImpl implements HotelService {
@@ -79,13 +78,13 @@ public class HotelServiceImpl implements HotelService {
         }
         return hotelDTOList;
     }
-/**
+
+    /**
      * Obtiene una lista de los hoteles disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.
      * @param dateTo La fecha final.
      * @param destination El lugar destino.
      */
-
     public List<HotelDTO> obtenerHotelesDisponibles(LocalDate dateFrom, LocalDate dateTo, String destination){
         if (dateFrom.compareTo(dateTo) >= 0)
             throw new ConflictException("La fecha de salida debe ser mayor a la de entrada.");
@@ -102,24 +101,21 @@ public class HotelServiceImpl implements HotelService {
         Date disponibilityDateTo  = java.util.Date.from(dateTo.atStartOfDay().
                 atZone(ZoneId.systemDefault()).
                 toInstant());
-        List<Hotel> HotelListFiltered = hotelList.stream()
+        List<Hotel> hotelListFiltered = hotelList.stream()
                 .filter(x -> (x.getDisponibilityDateFrom().compareTo(disponibilityDateFrom) <= 0)
                         && (x.getDisponibilityDateTo().compareTo(disponibilityDateTo) >= 0)
                         && x.getPlace().equals(destination))
                 .collect(Collectors.toList());
-        if (HotelListFiltered.isEmpty())
+        if (hotelListFiltered.isEmpty())
             throw new NoContentException("No se encontraron hoteles disponibles para esta busqueda.");
         List<HotelDTO> hotelDTOList = new ArrayList<>();
-        for (Hotel hotel : HotelListFiltered) {
+        for (Hotel hotel : hotelListFiltered) {
             HotelDTO hotelDTO = transformarHotelAHotelDTO(hotel);
             hotelDTOList.add(hotelDTO);
         }
         return hotelDTOList;
     }
 
-
-/**
-    */
     /**
      * Realiza la reserva de un hotel en base a el objeto payloadHotelDTO.
      * @param payloadHotelDTO Objeto con los datos para realizar una reserva de hotel.
