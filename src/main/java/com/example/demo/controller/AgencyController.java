@@ -65,14 +65,12 @@ public class AgencyController {
     /**
      * Realiza la reserva de un hotel en base a el objeto payloadHotelDTO.
      * @param payloadHotelDTO Objeto con los datos para realizar una reserva de hotel.
-     *//*
+     */
 
     @PostMapping("/api/v1/booking")
-    public ResponseEntity<ResponseHotelDTO> reservarHotel(@RequestBody @Valid PayloadHotelDTO payloadHotelDTO){
+    public ResponseEntity<StatusCodeDTO> reservarHotel(@RequestBody @Valid PayloadHotelDTO payloadHotelDTO){
         return new ResponseEntity<>(hotelService.reservar(payloadHotelDTO), HttpStatus.OK);
     }
-
-    */
 
     /**
      * Genera el alta de un nuevo vuelo.
