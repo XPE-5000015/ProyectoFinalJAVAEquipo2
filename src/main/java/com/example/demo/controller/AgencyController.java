@@ -31,24 +31,6 @@ public class AgencyController {
     }
 
     /**
-     * Muestra todos los hoteles registrados en la BD.
-     */
-    @GetMapping("/api/v1/hotels")
-    public ResponseEntity<List<HotelDTO>> mostrarHoteles()
-    {
-        return new ResponseEntity<>(hotelService.obtenerHoteles(), HttpStatus.OK);
-    }
-
-    /**
-     * Muestra todos los hoteles registrados en la BD.
-     */
-    @GetMapping("/api/v1/flights")
-    public ResponseEntity<List<FlightDTO>> mostrarVuelos()
-    {
-        return new ResponseEntity<>(flightService.obtenerVuelos(), HttpStatus.OK);
-    }
-
-/**
      * Obtiene una lista de todos los hoteles disponibles, o una lista de los hoteles disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.
      * @param dateTo La fecha final.
@@ -88,7 +70,7 @@ public class AgencyController {
      * Edita un vuelo basado en su FlightNumber.
      * @param flightDTO Objeto con los datos para editar un vuelo.
      */
-    @PostMapping("/api/v1/flights/new")
+    @PutMapping("/api/v1/flights/edit")
     public ResponseEntity<StatusCodeDTO> editarVuelo(@RequestBody @Valid FlightDTO flightDTO){
         return new ResponseEntity<>(flightService.editarVuelo(flightDTO), HttpStatus.OK);
     }
@@ -99,8 +81,7 @@ public class AgencyController {
      * @param dateTo La fecha final.
      * @param origin El lugar origen.
      * @param destination El lugar destino.
-     *//*
-
+     */
     @GetMapping("/api/v1/flights")
     public ResponseEntity<List<FlightDTO>> obtenerVuelos(@RequestParam(required = false) @DateTimeFormat(pattern="dd/MM/yyyy") LocalDate dateFrom, @RequestParam(required = false) @DateTimeFormat(pattern="dd/MM/yyyy") LocalDate dateTo, @RequestParam(required = false) String origin, @RequestParam(required = false) String destination){
         if (dateFrom == null && dateTo == null && origin == null && destination == null)
@@ -108,7 +89,7 @@ public class AgencyController {
         return new ResponseEntity<>(flightService.obtenerVuelosDisponibles(dateFrom,dateTo,origin,destination), HttpStatus.OK);
     }
 
-    */
+
 /**
      * Realiza la reserva de un vuelo en base a el objeto payloadFlightDTO.
      * @param payloadFlightDTO Objeto con los datos para realizar una reserva de vuelo.
