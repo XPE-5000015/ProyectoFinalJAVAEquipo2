@@ -12,8 +12,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -80,28 +80,47 @@ public class FlightServiceImpl implements FlightService {
      * @param dateTo La fecha final.
      * @param origin El lugar origen.
      * @param destination El lugar destino.
-     *//*
+     */
 
     public List<FlightDTO> obtenerVuelosDisponibles(LocalDate dateFrom, LocalDate dateTo, String origin, String destination){
         if (dateFrom.compareTo(dateTo) >= 0)
             throw new ConflictException("La fecha inicial no puede ser menor o igual a la fecha final.");
-        if (!flights.obtenerOrigenesValidos().contains(origin))
+        List<Flight> flightList = flights.findAll();
+        List<String> origenes = flightList.stream()
+                .map(Flight::getOrigin)
+                .distinct()
+                .collect(Collectors.toList());
+        List<String> destinos = flightList.stream()
+                .map(Flight::getDestination)
+                .distinct()
+                .collect(Collectors.toList());
+        if (!origenes.contains(origin))
             throw new NoContentException("El origen elegido no existe.");
-        if (!flights.obtenerDestinosValidos().contains(destination))
+        if (!destinos.contains(destination))
             throw new NoContentException("El destino elegido no existe.");
-        List<Flight> flightList = flights.obtenerVuelosDisponibles(dateFrom, dateTo, origin, destination);
-        if (flightList.isEmpty())
+        Date goingDate = java.util.Date.from(dateFrom.atStartOfDay().
+                atZone(ZoneId.systemDefault()).
+                toInstant());
+        Date returnDate = java.util.Date.from(dateTo.atStartOfDay().
+                atZone(ZoneId.systemDefault()).
+                toInstant());
+        List<Flight> flightListFiltered = flightList.stream()
+                .filter(x -> (x.getGoingDate().compareTo(goingDate) <= 0)
+                        && (x.getReturnDate().compareTo(returnDate) >= 0)
+                        && x.getOrigin().equals(origin)
+                        && x.getDestination().equals(destination))
+                .collect(Collectors.toList());
+        if (flightListFiltered.isEmpty())
             throw new NoContentException("No se encontraron vuelos disponibles para esta busqueda.");
         List<FlightDTO> flightDTOList = new ArrayList<>();
-        for (Flight flight : flightList) {
+        for (Flight flight : flightListFiltered) {
             FlightDTO flightDTO = transformarFlightAFlightDTO(flight);
             flightDTOList.add(flightDTO);
         }
         return flightDTOList;
     }
 
-    */
-/**
+    /**
      * Realiza la reserva de un vuelo en base a el objeto payloadFlightDTO.
      * @param payloadFlightDTO Objeto con los datos para realizar una reserva de vuelo.
      */
