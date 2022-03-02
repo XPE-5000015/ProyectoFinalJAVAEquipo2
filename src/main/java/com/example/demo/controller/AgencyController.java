@@ -83,7 +83,17 @@ public class AgencyController {
     public ResponseEntity<StatusCodeDTO> grabarVuelo(@RequestBody @Valid FlightDTO flightDTO){
         return new ResponseEntity<>(flightService.grabarVuelo(flightDTO), HttpStatus.OK);
     }
-/**
+
+    /**
+     * Edita un vuelo basado en su FlightNumber.
+     * @param flightDTO Objeto con los datos para editar un vuelo.
+     */
+    @PostMapping("/api/v1/flights/new")
+    public ResponseEntity<StatusCodeDTO> editarVuelo(@RequestBody @Valid FlightDTO flightDTO){
+        return new ResponseEntity<>(flightService.editarVuelo(flightDTO), HttpStatus.OK);
+    }
+
+    /**
      * Obtiene una lista de todos los vuelos disponibles, o una lista de los vuelos disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.
      * @param dateTo La fecha final.

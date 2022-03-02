@@ -32,7 +32,20 @@ public class FlightServiceImpl implements FlightService {
         return new StatusCodeDTO("Vuelo dado de alta correctamente");
     }
 
-/**
+    /**
+     * Edita un vuelo basado en su FlightNumber.
+     * @param flightDTO Objeto con los datos para editar un vuelo.
+     */
+    public StatusCodeDTO editarVuelo(FlightDTO flightDTO){
+        if (!flights.existsById(flightDTO.getFlightNumber()))
+            throw new ConflictException("Este numero de vuelo no existe.");
+        Flight flight = transformarFlightDTOAFlight(flightDTO);
+        flight.setFlight_reservations(null);
+        flights.save(flight);
+        return new StatusCodeDTO("Vuelo modificado correctamente");
+    }
+
+    /**
      * Obtiene una lista de todos los vuelos disponibles.
      */
 

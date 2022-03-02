@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface FlightService {
+    StatusCodeDTO editarVuelo(FlightDTO flightDTO);
     StatusCodeDTO grabarVuelo(FlightDTO flightDTO);
     List<FlightDTO> obtenerVuelos();
 }
