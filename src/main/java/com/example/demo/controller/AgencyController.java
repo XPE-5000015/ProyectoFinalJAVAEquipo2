@@ -35,7 +35,7 @@ public class AgencyController {
      * @param dateFrom La fecha inicial.
      * @param dateTo La fecha final.
      * @param destination El lugar destino.
-     *//*
+     */
 
     @GetMapping("/api/v1/hotels")
     public ResponseEntity<List<HotelDTO>> obtenerHoteles(@RequestParam(required = false) @DateTimeFormat(pattern="dd/MM/yyyy") LocalDate dateFrom, @RequestParam(required = false) @DateTimeFormat(pattern="dd/MM/yyyy") LocalDate dateTo, @RequestParam(required = false) String destination){
@@ -44,6 +44,16 @@ public class AgencyController {
         return new ResponseEntity<>(hotelService.obtenerHotelesDisponibles(dateFrom, dateTo, destination), HttpStatus.OK);
     }
 
+    /**
+     * Edita un Hotel basado en su hotelCode.
+     * @param hotelDTO Objeto con los datos para editar un Hotel.
+     */
+    @PutMapping("/api/v1/hotels/edit")
+    public ResponseEntity<StatusCodeDTO>editarHotel(@RequestBody @Valid HotelDTO hotelDTO){
+        return new ResponseEntity<>(hotelService.editarHotel(hotelDTO), HttpStatus.OK);
+    }
+
+/**
     */
     /**
      * Realiza la reserva de un hotel en base a el objeto payloadHotelDTO.

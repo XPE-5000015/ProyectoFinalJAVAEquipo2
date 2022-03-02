@@ -17,8 +17,10 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,6 +51,19 @@ public class HotelServiceImpl implements HotelService {
         hotels.save(hotel);
         return new StatusCodeDTO("Hotel dado de alta");
     }
+
+    /**
+     * Edita un Hotel basado en su HotelCode.
+     * @param hotelDTO Objeto con los datos para editar un Hotel.
+     */
+    public StatusCodeDTO editarHotel(HotelDTO hotelDTO){
+        if (!hotels.existsById(hotelDTO.getHotelCode()))
+            throw new ConflictException("Este numero de Hotel no existe.");
+        Hotel hotel = transformarHotelDTOAHotel(hotelDTO);
+        hotel.setHotel_bookings(null);
+        hotels.save(hotel);
+        return new StatusCodeDTO("Hotel modificado correctamente");
+    }
 /**
      * Obtiene una lista de todos los hoteles disponibles.
      */
@@ -69,24 +84,41 @@ public class HotelServiceImpl implements HotelService {
      * @param dateFrom La fecha inicial.
      * @param dateTo La fecha final.
      * @param destination El lugar destino.
-     *//*
+     */
 
     public List<HotelDTO> obtenerHotelesDisponibles(LocalDate dateFrom, LocalDate dateTo, String destination){
         if (dateFrom.compareTo(dateTo) >= 0)
             throw new ConflictException("La fecha de salida debe ser mayor a la de entrada.");
-        if (!hotels.obtenerDestinosValidos().contains(destination))
+        List<Hotel> hotelList = hotels.findAll();
+        List<String> destino = hotelList.stream()
+                .map(Hotel::getPlace)
+                .distinct()
+                .collect(Collectors.toList());
+        if (!destino.contains(destination))
             throw new NoContentException("El destino elegido no existe.");
-        List<Hotel> hotelList = hotels.obtenerHotelesDisponibles(dateFrom, dateTo, destination);
-        if (hotelList.isEmpty())
+        Date disponibilityDateFrom= java.util.Date.from(dateFrom.atStartOfDay().
+                atZone(ZoneId.systemDefault()).
+                toInstant());
+        Date disponibilityDateTo  = java.util.Date.from(dateTo.atStartOfDay().
+                atZone(ZoneId.systemDefault()).
+                toInstant());
+        List<Hotel> HotelListFiltered = hotelList.stream()
+                .filter(x -> (x.getDisponibilityDateFrom().compareTo(disponibilityDateFrom) <= 0)
+                        && (x.getDisponibilityDateTo().compareTo(disponibilityDateTo) >= 0)
+                        && x.getPlace().equals(destination))
+                .collect(Collectors.toList());
+        if (HotelListFiltered.isEmpty())
             throw new NoContentException("No se encontraron hoteles disponibles para esta busqueda.");
         List<HotelDTO> hotelDTOList = new ArrayList<>();
-        for (Hotel hotel : hotelList) {
+        for (Hotel hotel : HotelListFiltered) {
             HotelDTO hotelDTO = transformarHotelAHotelDTO(hotel);
             hotelDTOList.add(hotelDTO);
         }
         return hotelDTOList;
     }
 
+
+/**
     */
     /**
      * Realiza la reserva de un hotel en base a el objeto payloadHotelDTO.
