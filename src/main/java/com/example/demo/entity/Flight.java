@@ -24,6 +24,6 @@ public class Flight {
     private Date goingDate;
     private Date returnDate;
 
-    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "flight")
     private List<Flight_reservation> flight_reservations;
 }
