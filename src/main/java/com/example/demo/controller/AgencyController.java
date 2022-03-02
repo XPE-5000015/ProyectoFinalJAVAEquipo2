@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 import com.example.demo.dto.*;
+import com.example.demo.entity.Flight;
 import com.example.demo.service.FlightService;
 import com.example.demo.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,7 @@ public class AgencyController {
     public ResponseEntity<StatusCodeDTO> grabarHotel(@RequestBody @Valid HotelDTO hotelDTO){
         return new ResponseEntity<>(hotelService.grabarHotel(hotelDTO), HttpStatus.OK);
     }
+
 
     /**
      * Obtiene una lista de todos los hoteles disponibles, o una lista de los hoteles disponibles filtrando en base a los parametros.
@@ -97,5 +99,10 @@ public class AgencyController {
     @PostMapping("/api/v1/flight-reservation/new")
     public ResponseEntity<StatusCodeDTO> reservarVuelo(@RequestBody PayloadFlightDTO payloadFlightDTO){
         return new ResponseEntity<>(flightService.reservar(payloadFlightDTO), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/api/v1/flights/delete")
+    public ResponseEntity<StatusCodeDTO> deleteFlight(@RequestParam() FlightDTO flightNumber){
+        return new ResponseEntity<>(flightService.deleteFlight(flightNumber), HttpStatus.OK);
     }
 }

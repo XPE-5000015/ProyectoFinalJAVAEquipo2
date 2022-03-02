@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface HotelService {
+
     StatusCodeDTO grabarHotel(HotelDTO hotelDTO);
     List<HotelDTO> obtenerHoteles();
 }

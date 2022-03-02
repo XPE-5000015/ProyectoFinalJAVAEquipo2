@@ -75,7 +75,8 @@ public class HotelServiceImpl implements HotelService {
 /**
      * Realiza la reserva de un hotel en base a el objeto payloadHotelDTO.
      * @param payloadHotelDTO Objeto con los datos para realizar una reserva de hotel.
-     *//*
+     */
+/*
 
     public ResponseHotelDTO reservar(PayloadHotelDTO payloadHotelDTO){
         if (payloadHotelDTO.getBooking().getDateFrom().compareTo(payloadHotelDTO.getBooking().getDateTo()) >= 0)

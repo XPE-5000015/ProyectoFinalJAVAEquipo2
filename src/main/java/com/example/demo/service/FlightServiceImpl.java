@@ -12,10 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -122,11 +119,16 @@ public class FlightServiceImpl implements FlightService {
         return flightDTOList;
     }
 
+    public StatusCodeDTO deleteFlight(FlightDTO flightDTO){
+        if(!flights.existsById(flightDTO.getFlightNumber()))
+            throw new ConflictException("Este numero de vuelo no existe.");
+        flights.deleteById(flightDTO.getFlightNumber());
+        return new StatusCodeDTO("Vuelo dado de baja correctamente");
+    }
     /**
      * Realiza la reserva de un vuelo en base a el objeto payloadFlightDTO.
      * @param payloadFlightDTO Objeto con los datos para realizar una reserva de vuelo.
      */
-
     public StatusCodeDTO reservar(PayloadFlightDTO payloadFlightDTO){
         if (payloadFlightDTO.getFlightReservation().getGoingDate().compareTo(payloadFlightDTO.getFlightReservation().getReturnDate()) >= 0)
             throw new ConflictException("La fecha inicial no puede ser menor o igual a la fecha final.");
