@@ -155,7 +155,7 @@ public class HotelServiceImpl implements HotelService {
         hotel.setIsBooking(true);
         hotels.save(hotel);
 
-        return new StatusCodeDTO("El proceso termino satisfactoriamente.");
+        return new StatusCodeDTO("Reserva de hotel dada de alta correctamente.");
     }
 
     /**
