@@ -64,7 +64,6 @@ public class FlightServiceImpl implements FlightService {
     /**
      * Obtiene una lista de todos los vuelos disponibles.
      */
-
     public List<FlightDTO> obtenerVuelos(){
         List<Flight> flightList = flights.findAll();
         if (flightList.isEmpty())
@@ -76,14 +75,14 @@ public class FlightServiceImpl implements FlightService {
         }
         return flightDTOList;
     }
-/**
+
+    /**
      * Obtiene una lista de los vuelos disponibles filtrando en base a los parametros.
      * @param dateFrom La fecha inicial.
      * @param dateTo La fecha final.
      * @param origin El lugar origen.
      * @param destination El lugar destino.
      */
-
     public List<FlightDTO> obtenerVuelosDisponibles(LocalDate dateFrom, LocalDate dateTo, String origin, String destination){
         if (dateFrom.compareTo(dateTo) >= 0)
             throw new ConflictException("La fecha inicial no puede ser menor o igual a la fecha final.");
@@ -126,7 +125,6 @@ public class FlightServiceImpl implements FlightService {
      * Realiza la reserva de un vuelo en base a el objeto payloadFlightDTO.
      * @param payloadFlightDTO Objeto con los datos para realizar una reserva de vuelo.
      */
-
     public StatusCodeDTO reservar(PayloadFlightDTO payloadFlightDTO){
         if (payloadFlightDTO.getFlightReservation().getGoingDate().compareTo(payloadFlightDTO.getFlightReservation().getReturnDate()) >= 0)
             throw new ConflictException("La fecha inicial no puede ser menor o igual a la fecha final.");
@@ -153,7 +151,7 @@ public class FlightServiceImpl implements FlightService {
 
         PaymentMethod paymentMethodSaved = savePaymentMethod(payloadFlightDTO.getFlightReservation().getPaymentMethod());
 
-        Flight_reservation flight_reservationSaved = saveFlight_reservation(payloadFlightDTO, paymentMethodSaved.getPaymentMethod_id());
+        Flight_reservation flight_reservationSaved = saveFlight_reservation(payloadFlightDTO, paymentMethodSaved.getPaymentMethod_id(), total);
 
         List<PersonDTO> personDTOList = payloadFlightDTO.getFlightReservation().getPeople();
         List<Person> personList = new ArrayList<>();
@@ -202,7 +200,7 @@ public class FlightServiceImpl implements FlightService {
      * @param payloadFlightDTO Objeto con los datos necesarios guardar la reserva del vuelo.
      * @param paymentMethod_id Id del método de pago.
      */
-    private Flight_reservation saveFlight_reservation(PayloadFlightDTO payloadFlightDTO, Integer paymentMethod_id){
+    private Flight_reservation saveFlight_reservation(PayloadFlightDTO payloadFlightDTO, Integer paymentMethod_id, Double total){
         Flight_reservation flight_reservation = new Flight_reservation();
         flight_reservation.setUserName(payloadFlightDTO.getUserName());
         flight_reservation.setGoingDate(java.util.Date.from(
@@ -221,6 +219,7 @@ public class FlightServiceImpl implements FlightService {
         flight_reservation.setSeats(payloadFlightDTO.getFlightReservation().getSeats());
         flight_reservation.setSeatType(payloadFlightDTO.getFlightReservation().getSeatType());
         flight_reservation.setPaymentMethod_id(paymentMethod_id);
+        flight_reservation.setTotal(total);
         return flight_reservations.save(flight_reservation);
     }
 
@@ -286,8 +285,7 @@ public class FlightServiceImpl implements FlightService {
         return flight;
     }
 
-
-/**
+    /**
      * Transforma de un objeto FlightReservationPayloadDTO a FlightReservationResponseDTO.
      * @param flightReservationPayloadDTO Objeto con los datos necesarios para hacer la transformación.
      *//*
@@ -306,7 +304,8 @@ public class FlightServiceImpl implements FlightService {
     }
 
     */
-/**
+
+    /**
      * Realiza el calculo de los intereses en base al metodo de pago.
      * @param paymentMethodDTO Objeto con los datos del metodo de pago.
      */
