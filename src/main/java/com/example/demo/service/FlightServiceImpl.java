@@ -62,6 +62,17 @@ public class FlightServiceImpl implements FlightService {
     }
 
     /**
+     * Elimina un Vuelo basado en su flightNumber.
+     * @param flightNumber Codigo de Vuelo que se va eliminar.
+     */
+    public StatusCodeDTO deleteFlight(String flightNumber){
+        if(!flights.existsById(flightNumber))
+            throw new ConflictException("Este numero de vuelo no existe.");
+        flights.deleteById(flightNumber);
+        return new StatusCodeDTO("Vuelo dado de baja correctamente");
+    }
+
+    /**
      * Obtiene una lista de todos los vuelos disponibles.
      */
     public List<FlightDTO> obtenerVuelos(){
