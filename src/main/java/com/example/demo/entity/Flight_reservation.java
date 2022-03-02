@@ -35,6 +35,6 @@ public class Flight_reservation {
     @JoinColumn(name = "flightNumber", insertable = false, updatable = false)
     private Flight flight;
 
-    @OneToMany(mappedBy = "flight_reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "flight_reservation", cascade = CascadeType.ALL)
     private List<Reservation_person> reservation_people;
 }

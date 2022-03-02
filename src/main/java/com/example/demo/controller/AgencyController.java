@@ -88,7 +88,7 @@ public class AgencyController {
      * Edita un vuelo basado en su FlightNumber.
      * @param flightDTO Objeto con los datos para editar un vuelo.
      */
-    @PostMapping("/api/v1/flights/new")
+    @PutMapping("/api/v1/flights/edit")
     public ResponseEntity<StatusCodeDTO> editarVuelo(@RequestBody @Valid FlightDTO flightDTO){
         return new ResponseEntity<>(flightService.editarVuelo(flightDTO), HttpStatus.OK);
     }

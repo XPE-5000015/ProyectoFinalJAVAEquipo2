@@ -140,7 +140,7 @@ public class FlightServiceImpl implements FlightService {
             personList.add(transformarPersonDTOAPerson(personDTO));
         }
 
-        savePeople(personList, flight_reservationSaved.getReservation_id());
+        savePeople(personList, flight_reservationSaved);
 
         StatusCodeDTO statusCodeDTO = new StatusCodeDTO();
         statusCodeDTO.setMessage("Reserva de vuelo dada de alta correctamente.");
@@ -153,25 +153,25 @@ public class FlightServiceImpl implements FlightService {
      * @param paymentMethodDTO Objeto con los datos necesarios guardar el metodo de pago.
      */
     private PaymentMethod savePaymentMethod(PaymentMethodDTO paymentMethodDTO){
-        PaymentMethod paymentMethod = new PaymentMethod();
-        paymentMethod.setType(paymentMethod.getType());
-        paymentMethod.setNumber(paymentMethod.getNumber());
-        paymentMethod.setDues(paymentMethod.getDues());
-        return paymentMethods.save(paymentMethod);
+        PaymentMethod paymentMethodToSave = new PaymentMethod();
+        paymentMethodToSave.setType(paymentMethodDTO.getType());
+        paymentMethodToSave.setNumber(paymentMethodDTO.getNumber());
+        paymentMethodToSave.setDues(paymentMethodDTO.getDues());
+        return paymentMethods.save(paymentMethodToSave);
     }
 
     /**
      * Graba el metodo de pago.
      * @param personList Objeto con los datos necesarios guardar el metodo de pago.
-     * @param reservation_id Id de la reservación.
+     * @param flight_reservation Id de la reservación.
      */
-    private void savePeople(List<Person> personList, Integer reservation_id){
+    private void savePeople(List<Person> personList, Flight_reservation flight_reservation){
         for (Person person : personList) {
             if (!people.existsById(person.getDni()))
                 people.save(person);
             Reservation_person reservation_person = new Reservation_person();
-            reservation_person.setReservation_id(reservation_id);
-            reservation_person.setDni(person.getDni());
+            reservation_person.setFlight_reservation(flight_reservation);
+            reservation_person.setPerson(person);
             reservation_people.save(reservation_person);
         }
     }

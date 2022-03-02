@@ -12,18 +12,16 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "reservation_person")
-@IdClass(Reservation_person.class)
-public class Reservation_person implements Serializable {
+public class Reservation_person {
     @Id
-    private Integer reservation_id;
-    @Id
-    private String dni;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer reservation_person_id;
 
-    @ManyToOne
-    @JoinColumn(name = "reservation_id", insertable = false, updatable = false)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "reservation_id")
     private Flight_reservation flight_reservation;
 
-    @ManyToOne
-    @JoinColumn(name = "dni", insertable = false, updatable = false)
+    @ManyToOne(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "dni")
     private Person person;
 }
