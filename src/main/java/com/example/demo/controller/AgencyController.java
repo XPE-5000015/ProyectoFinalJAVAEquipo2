@@ -53,7 +53,16 @@ public class AgencyController {
         return new ResponseEntity<>(hotelService.editarHotel(hotelDTO), HttpStatus.OK);
     }
 
-/**
+    /**
+     * Elimina un Hotel basado en su HotelCode.
+     * @param hotelCode Codigo de hotel que se va eliminar.
+     */
+    @DeleteMapping ("/api/v1/hotels/delete")
+    public ResponseEntity<StatusCodeDTO>eliminarHotel(@RequestParam String hotelCode){
+        return new ResponseEntity<>(hotelService.eliminarHotel(hotelCode), HttpStatus.OK);
+    }
+
+    /**
      * Realiza la reserva de un hotel en base a el objeto payloadHotelDTO.
      * @param payloadHotelDTO Objeto con los datos para realizar una reserva de hotel.
      *//*
