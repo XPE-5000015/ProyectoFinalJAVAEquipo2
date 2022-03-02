@@ -110,4 +110,13 @@ public class AgencyController {
     public ResponseEntity<StatusCodeDTO> reservarVuelo(@RequestBody @Valid PayloadFlightDTO payloadFlightDTO){
         return new ResponseEntity<>(flightService.reservar(payloadFlightDTO), HttpStatus.OK);
     }
+
+    /**
+     * Elimina un Vuelo basado en su flightNumber.
+     * @param flightNumber Codigo de Vuelo que se va eliminar.
+     */
+    @DeleteMapping ("/api/v1/flights/delete")
+    public ResponseEntity<StatusCodeDTO>eliminarVuelo(@RequestParam String flightNumber){
+        return new ResponseEntity<>(flightService.deleteFlight(flightNumber), HttpStatus.OK);
+    }
 }
