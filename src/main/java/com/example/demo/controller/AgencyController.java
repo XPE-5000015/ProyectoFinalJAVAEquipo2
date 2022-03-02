@@ -43,6 +43,16 @@ public class AgencyController {
             return new ResponseEntity<>(hotelService.obtenerHoteles(), HttpStatus.OK);
         return new ResponseEntity<>(hotelService.obtenerHotelesDisponibles(dateFrom, dateTo, destination), HttpStatus.OK);
     }
+
+    /**
+     * Edita un Hotel basado en su hotelCode.
+     * @param hotelDTO Objeto con los datos para editar un Hotel.
+     */
+    @PutMapping("/api/v1/hotels/edit")
+    public ResponseEntity<StatusCodeDTO>editarHotel(@RequestBody @Valid HotelDTO hotelDTO){
+        return new ResponseEntity<>(hotelService.editarHotel(hotelDTO), HttpStatus.OK);
+    }
+
 /**
      * Realiza la reserva de un hotel en base a el objeto payloadHotelDTO.
      * @param payloadHotelDTO Objeto con los datos para realizar una reserva de hotel.

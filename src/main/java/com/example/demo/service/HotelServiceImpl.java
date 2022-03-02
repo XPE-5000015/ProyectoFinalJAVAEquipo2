@@ -34,6 +34,19 @@ public class HotelServiceImpl implements HotelService {
         hotels.save(hotel);
         return new StatusCodeDTO("Hotel dado de alta");
     }
+
+    /**
+     * Edita un Hotel basado en su HotelCode.
+     * @param hotelDTO Objeto con los datos para editar un Hotel.
+     */
+    public StatusCodeDTO editarHotel(HotelDTO hotelDTO){
+        if (!hotels.existsById(hotelDTO.getHotelCode()))
+            throw new ConflictException("Este numero de Hotel no existe.");
+        Hotel hotel = transformarHotelDTOAHotel(hotelDTO);
+        hotel.setHotel_bookings(null);
+        hotels.save(hotel);
+        return new StatusCodeDTO("Hotel modificado correctamente");
+    }
 /**
      * Obtiene una lista de todos los hoteles disponibles.
      */
