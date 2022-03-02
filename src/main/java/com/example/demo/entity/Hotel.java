@@ -24,6 +24,6 @@ public class Hotel {
     private Date disponibilityDateTo;
     private Boolean isBooking;
 
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "hotel")
     private List<Hotel_booking> hotel_bookings;
 }
