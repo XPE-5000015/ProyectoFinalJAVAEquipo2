@@ -93,11 +93,9 @@ public class AgencyController {
 /**
      * Realiza la reserva de un vuelo en base a el objeto payloadFlightDTO.
      * @param payloadFlightDTO Objeto con los datos para realizar una reserva de vuelo.
-     *//*
-
-    @PostMapping("/api/v1/flight-reservation")
-    public ResponseEntity<ResponseFlightDTO> reservarVuelo(@RequestBody PayloadFlightDTO payloadFlightDTO){
+     */
+    @PostMapping("/api/v1/flight-reservation/new")
+    public ResponseEntity<StatusCodeDTO> reservarVuelo(@RequestBody PayloadFlightDTO payloadFlightDTO){
         return new ResponseEntity<>(flightService.reservar(payloadFlightDTO), HttpStatus.OK);
     }
-*/
 }

@@ -1,22 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.*;
-import com.example.demo.entity.Flight;
-import com.example.demo.exceptions.ConflictException;
-import com.example.demo.exceptions.NoContentException;
-import com.example.demo.repository.Flights;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class FlightServiceImplTest {
