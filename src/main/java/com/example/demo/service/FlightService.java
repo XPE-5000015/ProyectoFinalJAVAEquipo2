@@ -13,4 +13,5 @@ public interface FlightService {
     StatusCodeDTO grabarVuelo(FlightDTO flightDTO);
     List<FlightDTO> obtenerVuelos();
     List<FlightDTO> obtenerVuelosDisponibles(LocalDate dateFrom, LocalDate dateTo, String origin, String destination);
+    StatusCodeDTO reservar(PayloadFlightDTO payloadFlightDTO);
 }
