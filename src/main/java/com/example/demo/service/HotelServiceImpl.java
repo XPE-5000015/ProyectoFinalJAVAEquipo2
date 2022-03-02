@@ -1,18 +1,25 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.*;
-import com.example.demo.entity.Hotel;
+import com.example.demo.entity.*;
 import com.example.demo.exceptions.ConflictException;
 import com.example.demo.exceptions.NoContentException;
+import com.example.demo.repository.Booking_people;
 import com.example.demo.repository.Hotels;
+import com.example.demo.repository.PaymentMethods;
+import com.example.demo.repository.People;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelServiceImpl implements HotelService {
@@ -20,6 +27,15 @@ public class HotelServiceImpl implements HotelService {
 
     @Autowired
     Hotels hotels;
+
+    @Autowired
+    PaymentMethods paymentMethods;
+
+    @Autowired
+    People people;
+
+    @Autowired
+    Booking_people booking_people;
 
     /**
      * Genera el alta de un nuevo hotel.
@@ -72,51 +88,52 @@ public class HotelServiceImpl implements HotelService {
     }
 
     */
-/**
+    /**
      * Realiza la reserva de un hotel en base a el objeto payloadHotelDTO.
      * @param payloadHotelDTO Objeto con los datos para realizar una reserva de hotel.
-     *//*
-
-    public ResponseHotelDTO reservar(PayloadHotelDTO payloadHotelDTO){
+     */
+    public StatusCodeDTO reservar(PayloadHotelDTO payloadHotelDTO){
         if (payloadHotelDTO.getBooking().getDateFrom().compareTo(payloadHotelDTO.getBooking().getDateTo()) >= 0)
             throw new ConflictException("La fecha de salida debe ser mayor a la de entrada.");
-        if (!hotels.obtenerDestinosValidos().contains(payloadHotelDTO.getBooking().getDestination()))
+        List<Hotel> hotelList = hotels.findAll();
+        List<String> destinos = hotelList.stream()
+                .map(Hotel::getPlace)
+                .distinct()
+                .collect(Collectors.toList());
+        if (!destinos.contains(payloadHotelDTO.getBooking().getDestination()))
             throw new NoContentException("El destino elegido no existe.");
         validarTipoHabitacionCantidadPersonas(payloadHotelDTO.getBooking());
-        Hotel hotel = hotels.obtenerHotel(payloadHotelDTO.getBooking().getHotelCode());
-*/
-/*
-        if (hotel.getReserved().equals("SI"))
+        Hotel hotel = hotels.getById(payloadHotelDTO.getBooking().getHotelCode());
+        if (hotel.getIsBooking())
             throw new ConflictException("Este hotel ya se encuentra reservado.");
-*//*
 
         Period period = Period.between(payloadHotelDTO.getBooking().getDateFrom(), payloadHotelDTO.getBooking().getDateTo());
 
         Double interests = calculaIntereses(payloadHotelDTO.getBooking().getPaymentMethod());
-        //double amount = Double.valueOf(hotel.getAmount()) * (period.getDays()-1);
-        //Double total = amount * (1 + interests);
+        double amount = hotel.getRoomPrice() * (period.getDays()-1);
+        Double total = amount * (1 + interests);
 
-        ResponseHotelDTO responseHotelDTO = new ResponseHotelDTO();
-        responseHotelDTO.setUserName(payloadHotelDTO.getUsername());
-        //responseHotelDTO.setAmount(amount);
-        responseHotelDTO.setInterest(interests*100);
-        //responseHotelDTO.setTotal(total);
-        responseHotelDTO.setBooking(transformarBookingPayloadABookingResponse(payloadHotelDTO.getBooking()));
-        StatusCodeDTO statusCode = new StatusCodeDTO();
-        statusCode.setCode(200);
-        statusCode.setMessage("El proceso termino satisfactoriamente.");
-        responseHotelDTO.setStatusCode(statusCode);
+        PaymentMethod paymentMethodSaved = savePaymentMethod(payloadHotelDTO.getBooking().getPaymentMethod());
 
-        //hotel.setReserved("SI");
-        return responseHotelDTO;
+        Hotel_booking hotel_bookingSaved = saveHotel_booking(payloadHotelDTO, paymentMethodSaved.getPaymentMethod_id(), total);
+
+        List<PersonDTO> personDTOList = payloadHotelDTO.getBooking().getPeople();
+        List<Person> personList = new ArrayList<>();
+        for (PersonDTO personDTO : personDTOList) {
+            personList.add(transformarPersonDTOAPerson(personDTO));
+        }
+        savePeople(personList, hotel_bookingSaved);
+
+        hotel.setIsBooking(true);
+        hotels.save(hotel);
+
+        return new StatusCodeDTO("El proceso termino satisfactoriamente.");
     }
 
-    */
-/**
+    /**
      * Realiza el calculo de los intereses en base al metodo de pago.
      * @param paymentMethodDTO Objeto con los datos del metodo de pago.
-     *//*
-
+     */
     private Double calculaIntereses(PaymentMethodDTO paymentMethodDTO){
         double interests = 0.0;
         if (paymentMethodDTO.getType().equalsIgnoreCase("CREDIT") && paymentMethodDTO.getDues() > 1){
@@ -138,12 +155,10 @@ public class HotelServiceImpl implements HotelService {
         return interests;
     }
 
-    */
-/**
+    /**
      * Valida que el tipo de habitación seleccionada coincida con la cantidad de personas que se alojarán en ella.
      * @param bookingPayloadDTO Objeto con los datos del tipo de habitación, y cantidad de personas.
-     *//*
-
+     */
     private void validarTipoHabitacionCantidadPersonas(BookingPayloadDTO bookingPayloadDTO){
         String message = "El tipo de habitación seleccionada no coincide con la cantidad de personas que se alojarán en ella.";
         if (bookingPayloadDTO.getRoomType().equalsIgnoreCase("SINGLE") && bookingPayloadDTO.getPeopleAmount() != 1)
@@ -156,8 +171,82 @@ public class HotelServiceImpl implements HotelService {
             throw new ConflictException(message);
     }
 
-    */
-/**
+    /**
+     * Graba el metodo de pago.
+     * @param paymentMethodDTO Objeto con los datos necesarios guardar el metodo de pago.
+     */
+    private PaymentMethod savePaymentMethod(PaymentMethodDTO paymentMethodDTO){
+        PaymentMethod paymentMethodToSave = new PaymentMethod();
+        paymentMethodToSave.setType(paymentMethodDTO.getType());
+        paymentMethodToSave.setNumber(paymentMethodDTO.getNumber());
+        paymentMethodToSave.setDues(paymentMethodDTO.getDues());
+        return paymentMethods.save(paymentMethodToSave);
+    }
+
+    /**
+     * Graba la reserva del hotel.
+     * @param payloadHotelDTO Objeto con los datos necesarios guardar la reserva del vuelo.
+     * @param paymentMethod_id Id del método de pago.
+     * @param total Monto total de la reservación.
+     */
+    private Hotel_booking saveHotel_booking(PayloadHotelDTO payloadHotelDTO, Integer paymentMethod_id, Double total){
+        Hotel_booking hotel_booking = new Hotel_booking();
+        hotel_booking.setUserName(payloadHotelDTO.getUserName());
+        hotel_booking.setDateFrom(java.util.Date.from(
+                payloadHotelDTO.getBooking().getDateFrom()
+                        .atStartOfDay()
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()));
+        hotel_booking.setDateTo(java.util.Date.from(
+                payloadHotelDTO.getBooking().getDateTo()
+                        .atStartOfDay()
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()));
+        hotel_booking.setDestination(payloadHotelDTO.getBooking().getDestination());
+        hotel_booking.setHotelCode(payloadHotelDTO.getBooking().getHotelCode());
+        hotel_booking.setPeopleAmount(payloadHotelDTO.getBooking().getPeopleAmount());
+        hotel_booking.setRoomType(payloadHotelDTO.getBooking().getRoomType());
+        hotel_booking.setPaymentMethod_id(paymentMethod_id);
+        hotel_booking.setTotal(total);
+        return hotel_booking;
+    }
+
+    /**
+     * Graba a la lista de personas y sus reservas.
+     * @param personList Objeto con los datos necesarios guardar el metodo de pago.
+     * @param hotel_booking Id de la reservación.
+     */
+    private void savePeople(List<Person> personList, Hotel_booking hotel_booking){
+        for (Person person : personList) {
+            if (!people.existsById(person.getDni()))
+                people.save(person);
+            Booking_person booking_person = new Booking_person();
+            booking_person.setHotel_booking(hotel_booking);
+            booking_person.setPerson(person);
+            booking_people.save(booking_person);
+        }
+    }
+
+    /**
+     * Transforma de un objeto PersonDTO a Person.
+     * @param personDTO Objeto con los datos necesarios para hacer la transformación.
+     */
+    private Person transformarPersonDTOAPerson(PersonDTO personDTO){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        Person person = new Person();
+        person.setDni(personDTO.getDni());
+        person.setName(personDTO.getName());
+        person.setLastname(personDTO.getLastname());
+        try {
+            person.setBirthDate(formatter.parse(personDTO.getBirthDate()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        person.setMail(personDTO.getMail());
+        return person;
+    }
+
+    /**
      * Transforma de un objeto BookingPayloadDTO a BookingResponseDTO.
      * @param bookingPayloadDTO Objeto con los datos necesarios para hacer la transformación.
      *//*
@@ -175,11 +264,10 @@ public class HotelServiceImpl implements HotelService {
     }
 
     */
-/**
+    /**
      * Transforma de un objeto Hotel a HotelDTO.
      * @param hotel Objeto con los datos necesarios para hacer la transformación.
      */
-
     private HotelDTO transformarHotelAHotelDTO(Hotel hotel){
         HotelDTO hotelDTO = new HotelDTO();
         hotelDTO.setHotelCode(hotel.getHotelCode());
@@ -197,6 +285,11 @@ public class HotelServiceImpl implements HotelService {
 
         return hotelDTO;
     }
+
+    /**
+     * Transforma de un objeto HotelDTO a Hotel.
+     * @param hotelDTO Objeto con los datos necesarios para hacer la transformación.
+     */
     private Hotel transformarHotelDTOAHotel(HotelDTO hotelDTO){
         Hotel hotel = new Hotel();
         hotel.setHotelCode(hotelDTO.getHotelCode());

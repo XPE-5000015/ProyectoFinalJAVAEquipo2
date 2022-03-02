@@ -11,4 +11,5 @@ import java.util.List;
 public interface HotelService {
     StatusCodeDTO grabarHotel(HotelDTO hotelDTO);
     List<HotelDTO> obtenerHoteles();
+    StatusCodeDTO reservar(PayloadHotelDTO payloadHotelDTO);
 }

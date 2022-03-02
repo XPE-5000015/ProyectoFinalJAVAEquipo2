@@ -26,6 +26,7 @@ public class Hotel_booking {
     private Integer peopleAmount;
     private String roomType;
     private Integer paymentMethod_id;
+    private Double total;
 
     @ManyToOne
     @JoinColumn(name = "hotelCode", insertable = false, updatable = false)
@@ -35,6 +36,6 @@ public class Hotel_booking {
     @JoinColumn(name = "paymentMethod_id", insertable = false, updatable = false)
     private PaymentMethod paymentMethod;
 
-    @OneToMany(mappedBy = "hotel_booking", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "hotel_booking", cascade = CascadeType.ALL)
     private List<Booking_person> booking_people;
 }
