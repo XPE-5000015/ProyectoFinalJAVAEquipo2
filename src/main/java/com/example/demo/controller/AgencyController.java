@@ -36,7 +36,6 @@ public class AgencyController {
      * @param dateTo La fecha final.
      * @param destination El lugar destino.
      */
-
     @GetMapping("/api/v1/hotels")
     public ResponseEntity<List<HotelDTO>> obtenerHoteles(@RequestParam(required = false) @DateTimeFormat(pattern="dd/MM/yyyy") LocalDate dateFrom, @RequestParam(required = false) @DateTimeFormat(pattern="dd/MM/yyyy") LocalDate dateTo, @RequestParam(required = false) String destination){
         if (dateFrom == null && dateTo == null && destination == null)
@@ -53,16 +52,22 @@ public class AgencyController {
         return new ResponseEntity<>(hotelService.editarHotel(hotelDTO), HttpStatus.OK);
     }
 
-/**
-    */
     /**
      * Realiza la reserva de un hotel en base a el objeto payloadHotelDTO.
      * @param payloadHotelDTO Objeto con los datos para realizar una reserva de hotel.
      */
-
-    @PostMapping("/api/v1/booking")
+    @PostMapping("/api/v1/booking/new")
     public ResponseEntity<StatusCodeDTO> reservarHotel(@RequestBody @Valid PayloadHotelDTO payloadHotelDTO){
         return new ResponseEntity<>(hotelService.reservar(payloadHotelDTO), HttpStatus.OK);
+    }
+
+    /**
+     * Realiza la edición de una reserva de hotel en base a el objeto payloadHotelDTO.
+     * @param payloadHotelDTO Objeto con los datos para realizar la edición a una reserva de hotel.
+     */
+    @PostMapping("/api/v1/booking/edit")
+    public ResponseEntity<StatusCodeDTO> editarReservaHotel(@RequestBody @Valid PayloadHotelDTO payloadHotelDTO){
+        return new ResponseEntity<>(hotelService.editarReserva(payloadHotelDTO), HttpStatus.OK);
     }
 
     /**
@@ -98,12 +103,12 @@ public class AgencyController {
     }
 
 
-/**
+    /**
      * Realiza la reserva de un vuelo en base a el objeto payloadFlightDTO.
      * @param payloadFlightDTO Objeto con los datos para realizar una reserva de vuelo.
      */
     @PostMapping("/api/v1/flight-reservation/new")
-    public ResponseEntity<StatusCodeDTO> reservarVuelo(@RequestBody PayloadFlightDTO payloadFlightDTO){
+    public ResponseEntity<StatusCodeDTO> reservarVuelo(@RequestBody @Valid PayloadFlightDTO payloadFlightDTO){
         return new ResponseEntity<>(flightService.reservar(payloadFlightDTO), HttpStatus.OK);
     }
 }

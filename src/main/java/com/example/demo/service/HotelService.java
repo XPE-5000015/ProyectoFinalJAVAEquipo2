@@ -14,4 +14,5 @@ public interface HotelService {
     List<HotelDTO> obtenerHotelesDisponibles(LocalDate dateFrom, LocalDate dateTo, String destination);
     StatusCodeDTO editarHotel(HotelDTO hotelDTO);
     StatusCodeDTO reservar(PayloadHotelDTO payloadHotelDTO);
+    StatusCodeDTO editarReserva(PayloadHotelDTO payloadHotelDTO);
 }
