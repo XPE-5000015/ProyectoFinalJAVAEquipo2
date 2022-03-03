@@ -22,20 +22,20 @@ public class Hotel_booking {
     private Date dateFrom;
     private Date dateTo;
     private String destination;
-    private String hotelCode;
+    //private String hotelCode;
     private Integer peopleAmount;
     private String roomType;
-    private Integer paymentMethod_id;
+    //private Integer paymentMethod_id;
     private Double total;
 
     @ManyToOne
-    @JoinColumn(name = "hotelCode", insertable = false, updatable = false)
+    @JoinColumn(name = "hotelCode")
     private Hotel hotel;
 
     @ManyToOne
-    @JoinColumn(name = "paymentMethod_id", insertable = false, updatable = false)
-    private PaymentMethod paymentMethod;
+    @JoinColumn(name = "paymentMethod_id")
+    private PaymentMethod paymentMethodBooking;
 
-    @OneToMany(mappedBy = "hotel_booking", cascade = CascadeType.ALL)
+    @OneToMany
     private List<Booking_person> booking_people;
 }

@@ -18,11 +18,11 @@ public class Booking_person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer booking_person_id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "booking_id")
     private Hotel_booking hotel_booking;
 
-    @ManyToOne(cascade = {CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "dni")
-    private Person person;
+    private Person personBooking;
 }

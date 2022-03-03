@@ -21,9 +21,9 @@ public class PaymentMethod {
     private String number;
     private Integer dues;
 
-    @OneToMany(mappedBy = "paymentMethod", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "paymentMethodBooking")
     private List<Hotel_booking> hotel_bookings;
 
-    @OneToMany(mappedBy = "paymentMethod", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "paymentMethodReservation")
     private List<Flight_reservation> flight_reservations;
 }

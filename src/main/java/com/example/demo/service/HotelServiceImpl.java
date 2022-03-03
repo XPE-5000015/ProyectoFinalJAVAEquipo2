@@ -135,7 +135,7 @@ public class HotelServiceImpl implements HotelService {
 
         PaymentMethod paymentMethodSaved = savePaymentMethod(payloadHotelDTO.getBooking().getPaymentMethod());
 
-        Hotel_booking hotel_bookingSaved = saveHotel_booking(payloadHotelDTO, paymentMethodSaved.getPaymentMethod_id(), total);
+        Hotel_booking hotel_bookingSaved = saveHotel_booking(payloadHotelDTO, hotel, paymentMethodSaved, total);
 
         List<PersonDTO> personDTOList = payloadHotelDTO.getBooking().getPeople();
         List<Person> personList = new ArrayList<>();
@@ -166,8 +166,6 @@ public class HotelServiceImpl implements HotelService {
             throw new NoContentException("El destino elegido no existe.");
         validarTipoHabitacionCantidadPersonas(payloadHotelDTO.getBooking());
         Hotel hotel = hotels.getById(payloadHotelDTO.getBooking().getHotelCode());
-        if (hotel.getIsBooking())
-            throw new ConflictException("Este hotel ya se encuentra reservado.");
 
         Period period = Period.between(payloadHotelDTO.getBooking().getDateFrom(), payloadHotelDTO.getBooking().getDateTo());
 
@@ -177,7 +175,7 @@ public class HotelServiceImpl implements HotelService {
 
         PaymentMethod paymentMethodSaved = savePaymentMethod(payloadHotelDTO.getBooking().getPaymentMethod());
 
-        Hotel_booking hotel_bookingSaved = editHotel_booking(payloadHotelDTO, paymentMethodSaved.getPaymentMethod_id(), total);
+        Hotel_booking hotel_bookingSaved = editHotel_booking(payloadHotelDTO, hotel, paymentMethodSaved, total);
 
         List<PersonDTO> personDTOList = payloadHotelDTO.getBooking().getPeople();
         List<Person> personList = new ArrayList<>();
@@ -248,10 +246,10 @@ public class HotelServiceImpl implements HotelService {
     /**
      * Graba la reserva del hotel.
      * @param payloadHotelDTO Objeto con los datos necesarios guardar la reserva del vuelo.
-     * @param paymentMethod_id Id del método de pago.
+     * @param paymentMethod Id del método de pago.
      * @param total Monto total de la reservación.
      */
-    private Hotel_booking saveHotel_booking(PayloadHotelDTO payloadHotelDTO, Integer paymentMethod_id, Double total){
+    private Hotel_booking saveHotel_booking(PayloadHotelDTO payloadHotelDTO, Hotel hotel, PaymentMethod paymentMethod, Double total){
         Hotel_booking hotel_booking = new Hotel_booking();
         hotel_booking.setUserName(payloadHotelDTO.getUserName());
         hotel_booking.setDateFrom(java.util.Date.from(
@@ -265,10 +263,10 @@ public class HotelServiceImpl implements HotelService {
                         .atZone(ZoneId.systemDefault())
                         .toInstant()));
         hotel_booking.setDestination(payloadHotelDTO.getBooking().getDestination());
-        hotel_booking.setHotelCode(payloadHotelDTO.getBooking().getHotelCode());
+        hotel_booking.setHotel(hotel);
         hotel_booking.setPeopleAmount(payloadHotelDTO.getBooking().getPeopleAmount());
         hotel_booking.setRoomType(payloadHotelDTO.getBooking().getRoomType());
-        hotel_booking.setPaymentMethod_id(paymentMethod_id);
+        hotel_booking.setPaymentMethodBooking(paymentMethod);
         hotel_booking.setTotal(total);
         return hotel_booking;
     }
@@ -276,10 +274,10 @@ public class HotelServiceImpl implements HotelService {
     /**
      * Graba la reserva del hotel.
      * @param payloadHotelDTO Objeto con los datos necesarios guardar la reserva del vuelo.
-     * @param paymentMethod_id Id del método de pago.
+     * @param paymentMethod Id del método de pago.
      * @param total Monto total de la reservación.
      */
-    private Hotel_booking editHotel_booking(PayloadHotelDTO payloadHotelDTO, Integer paymentMethod_id, Double total){
+    private Hotel_booking editHotel_booking(PayloadHotelDTO payloadHotelDTO, Hotel hotel, PaymentMethod paymentMethod, Double total){
         Hotel_booking hotel_booking = new Hotel_booking();
         hotel_booking.setBooking_id(payloadHotelDTO.getBooking().getBookingId());
         hotel_booking.setUserName(payloadHotelDTO.getUserName());
@@ -294,10 +292,10 @@ public class HotelServiceImpl implements HotelService {
                         .atZone(ZoneId.systemDefault())
                         .toInstant()));
         hotel_booking.setDestination(payloadHotelDTO.getBooking().getDestination());
-        hotel_booking.setHotelCode(payloadHotelDTO.getBooking().getHotelCode());
+        hotel_booking.setHotel(hotel);
         hotel_booking.setPeopleAmount(payloadHotelDTO.getBooking().getPeopleAmount());
         hotel_booking.setRoomType(payloadHotelDTO.getBooking().getRoomType());
-        hotel_booking.setPaymentMethod_id(paymentMethod_id);
+        hotel_booking.setPaymentMethodBooking(paymentMethod);
         hotel_booking.setTotal(total);
         return hotel_booking;
     }
@@ -314,13 +312,13 @@ public class HotelServiceImpl implements HotelService {
             List<Booking_person> booking_personList = booking_people.findAll();
             List<Booking_person> booking_personListFiltered = booking_personList.stream()
                     .filter(x -> (x.getHotel_booking().equals(hotel_booking))
-                    && (x.getPerson().equals(person)))
+                    && (x.getPersonBooking().equals(person)))
                     .collect(Collectors.toList());
             if (!booking_personListFiltered.isEmpty())
                 continue;
             Booking_person booking_person = new Booking_person();
             booking_person.setHotel_booking(hotel_booking);
-            booking_person.setPerson(person);
+            booking_person.setPersonBooking(person);
             booking_people.save(booking_person);
         }
     }

@@ -22,20 +22,20 @@ public class Flight_reservation {
     private Date returnDate;
     private String origin;
     private String destination;
-    private String flightNumber;
+    //private String flightNumber;
     private Integer seats;
     private String seatType;
-    private Integer paymentMethod_id;
+    //private Integer paymentMethod_id;
     private Double total;
 
     @ManyToOne
-    @JoinColumn(name = "paymentMethod_id", insertable = false, updatable = false)
-    private PaymentMethod paymentMethod;
+    @JoinColumn(name = "paymentMethod_id")
+    private PaymentMethod paymentMethodReservation;
 
     @ManyToOne
-    @JoinColumn(name = "flightNumber", insertable = false, updatable = false)
+    @JoinColumn(name = "flightNumber")
     private Flight flight;
 
-    @OneToMany(mappedBy = "flight_reservation", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "flight_reservation")
     private List<Reservation_person> reservation_people;
 }

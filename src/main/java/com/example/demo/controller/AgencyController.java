@@ -65,7 +65,7 @@ public class AgencyController {
      * Realiza la edición de una reserva de hotel en base a el objeto payloadHotelDTO.
      * @param payloadHotelDTO Objeto con los datos para realizar la edición a una reserva de hotel.
      */
-    @PostMapping("/api/v1/booking/edit")
+    @PutMapping("/api/v1/booking/edit")
     public ResponseEntity<StatusCodeDTO> editarReservaHotel(@RequestBody @Valid PayloadHotelDTO payloadHotelDTO){
         return new ResponseEntity<>(hotelService.editarReserva(payloadHotelDTO), HttpStatus.OK);
     }

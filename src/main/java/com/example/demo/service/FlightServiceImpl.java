@@ -190,7 +190,7 @@ public class FlightServiceImpl implements FlightService {
                 people.save(person);
             Reservation_person reservation_person = new Reservation_person();
             reservation_person.setFlight_reservation(flight_reservation);
-            reservation_person.setPerson(person);
+            reservation_person.setPersonReservation(person);
             reservation_people.save(reservation_person);
         }
     }
@@ -215,10 +215,10 @@ public class FlightServiceImpl implements FlightService {
                         .toInstant()));
         flight_reservation.setOrigin(payloadFlightDTO.getFlightReservation().getOrigin());
         flight_reservation.setDestination(payloadFlightDTO.getFlightReservation().getDestination());
-        flight_reservation.setFlightNumber(payloadFlightDTO.getFlightReservation().getFlightNumber());
+        //flight_reservation.setFlightNumber(payloadFlightDTO.getFlightReservation().getFlightNumber());
         flight_reservation.setSeats(payloadFlightDTO.getFlightReservation().getSeats());
         flight_reservation.setSeatType(payloadFlightDTO.getFlightReservation().getSeatType());
-        flight_reservation.setPaymentMethod_id(paymentMethod_id);
+        //flight_reservation.setPaymentMethod_id(paymentMethod_id);
         flight_reservation.setTotal(total);
         return flight_reservations.save(flight_reservation);
     }

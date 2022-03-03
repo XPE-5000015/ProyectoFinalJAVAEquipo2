@@ -21,9 +21,9 @@ public class Person
     private Date birthDate;
     private String mail;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "personReservation")
     private List<Reservation_person> reservation_people;
 
-    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "personBooking")
     private List<Booking_person> booking_people;
 }
