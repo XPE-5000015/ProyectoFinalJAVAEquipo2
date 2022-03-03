@@ -101,7 +101,7 @@ public class AgencyController {
             return new ResponseEntity<>(flightService.obtenerVuelos(), HttpStatus.OK);
         return new ResponseEntity<>(flightService.obtenerVuelosDisponibles(dateFrom,dateTo,origin,destination), HttpStatus.OK);
     }
-    
+
     /**
      * Realiza la reserva de un vuelo en base a el objeto payloadFlightDTO.
      * @param payloadFlightDTO Objeto con los datos para realizar una reserva de vuelo.
