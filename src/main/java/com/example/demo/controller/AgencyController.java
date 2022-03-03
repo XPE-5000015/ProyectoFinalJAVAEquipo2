@@ -53,8 +53,15 @@ public class AgencyController {
         return new ResponseEntity<>(hotelService.editarHotel(hotelDTO), HttpStatus.OK);
     }
 
-/**
-    */
+    /**
+     * Elimina un Hotel basado en su HotelCode.
+     * @param hotelCode Codigo de hotel que se va eliminar.
+     */
+    @DeleteMapping ("/api/v1/hotels/delete")
+    public ResponseEntity<StatusCodeDTO>eliminarHotel(@RequestParam String hotelCode){
+        return new ResponseEntity<>(hotelService.eliminarHotel(hotelCode), HttpStatus.OK);
+    }
+
     /**
      * Realiza la reserva de un hotel en base a el objeto payloadHotelDTO.
      * @param payloadHotelDTO Objeto con los datos para realizar una reserva de hotel.
@@ -102,8 +109,17 @@ public class AgencyController {
      * @param payloadFlightDTO Objeto con los datos para realizar una reserva de vuelo.
      */
     @PostMapping("/api/v1/flight-reservation/new")
-    public ResponseEntity<StatusCodeDTO> reservarVuelo(@RequestBody PayloadFlightDTO payloadFlightDTO){
+    public ResponseEntity<StatusCodeDTO> reservarVuelo(@RequestBody @Valid PayloadFlightDTO payloadFlightDTO){
         return new ResponseEntity<>(flightService.reservar(payloadFlightDTO), HttpStatus.OK);
+    }
+
+    /**
+     * Elimina un Vuelo basado en su flightNumber.
+     * @param flightNumber Codigo de Vuelo que se va eliminar.
+     */
+    @DeleteMapping ("/api/v1/flights/delete")
+    public ResponseEntity<StatusCodeDTO>eliminarVuelo(@RequestParam String flightNumber){
+        return new ResponseEntity<>(flightService.deleteFlight(flightNumber), HttpStatus.OK);
     }
 
     /**

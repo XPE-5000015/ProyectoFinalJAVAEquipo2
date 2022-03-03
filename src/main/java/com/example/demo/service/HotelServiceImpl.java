@@ -63,7 +63,19 @@ public class HotelServiceImpl implements HotelService {
         hotels.save(hotel);
         return new StatusCodeDTO("Hotel modificado correctamente");
     }
-/**
+
+    /**
+     * Elimina un Hotel basado en su HotelCode.
+     * @param hotelCode Codigo de hotel que se va eliminar.
+     */
+    public StatusCodeDTO eliminarHotel(String hotelCode){
+        if (!hotels.existsById(hotelCode))
+            throw new ConflictException("Este numero de Hotel no existe.");
+        hotels.deleteById(hotelCode);
+        return new StatusCodeDTO("Hotel dado de baja correctamente");
+    }
+
+    /**
      * Obtiene una lista de todos los hoteles disponibles.
      */
 

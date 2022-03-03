@@ -13,5 +13,6 @@ public interface HotelService {
     List<HotelDTO> obtenerHoteles();
     List<HotelDTO> obtenerHotelesDisponibles(LocalDate dateFrom, LocalDate dateTo, String destination);
     StatusCodeDTO editarHotel(HotelDTO hotelDTO);
+    StatusCodeDTO eliminarHotel(String hotelCode);
     StatusCodeDTO reservar(PayloadHotelDTO payloadHotelDTO);
 }
