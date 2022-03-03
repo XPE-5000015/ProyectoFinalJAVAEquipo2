@@ -12,10 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -166,6 +163,20 @@ public class FlightServiceImpl implements FlightService {
         return statusCodeDTO;
     }
 
+    /**
+     * Obtiene una lista de todos las reservas de vuelos.
+     */
+    public List<FlightReservationPayloadDTO> obtenerReservaVuelos(){
+        List<Flight_reservation> flight_reservationList = flight_reservations.findAll();
+        if (flight_reservationList.isEmpty())
+            throw new NoContentException("No se encontraron reservaciones de vuelos.");
+        List<FlightReservationPayloadDTO> flightReservationPayloadDTOList = new ArrayList<>();
+        for (Flight_reservation flight_reservation : flight_reservationList) {
+            FlightReservationPayloadDTO flightReservationPayloadDTO = transformarFlightReservationAFlightReservationPayloadDTO(flight_reservation);
+            flightReservationPayloadDTOList.add(flightReservationPayloadDTO);
+        }
+        return flightReservationPayloadDTOList;
+    }
 
     /**
      * Graba el metodo de pago.
@@ -225,6 +236,53 @@ public class FlightServiceImpl implements FlightService {
 
     /**
      * Transforma de un objeto Flight a FlightDTO.
+     * @param flight_reservation Objeto con los datos necesarios para hacer la transformación.
+     */
+    private FlightReservationPayloadDTO transformarFlightReservationAFlightReservationPayloadDTO(Flight_reservation flight_reservation){
+        FlightReservationPayloadDTO flightReservationPayloadDTO = new FlightReservationPayloadDTO();
+        flightReservationPayloadDTO.setReservationId(flight_reservation.getReservation_id());
+        flightReservationPayloadDTO.setGoingDate(flight_reservation.getGoingDate().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate());
+        flightReservationPayloadDTO.setReturnDate(flight_reservation.getReturnDate().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate());
+        flightReservationPayloadDTO.setOrigin(flight_reservation.getOrigin());
+        flightReservationPayloadDTO.setDestination(flight_reservation.getDestination());
+        flightReservationPayloadDTO.setFlightNumber(flight_reservation.getFlightNumber());
+        flightReservationPayloadDTO.setSeats(flight_reservation.getSeats());
+        flightReservationPayloadDTO.setSeatType(flight_reservation.getSeatType());
+
+        List<PersonDTO> personDTOS = new ArrayList<>();
+        List<Reservation_person> reservationPeople = reservation_people.findAll();
+        List<Reservation_person> reservationPeopleFiltered = reservationPeople.stream()
+                .filter(x -> (Objects.equals(x.getFlight_reservation().getReservation_id(), flightReservationPayloadDTO.getReservationId())))
+                .collect(Collectors.toList());
+        for (Reservation_person reservation_person : reservationPeopleFiltered){
+            Person person = people.getById(reservation_person.getPerson().getDni());
+            PersonDTO personDTO = transformarPersonAPersonDTO(person);
+            personDTOS.add(personDTO);
+        }
+
+        flightReservationPayloadDTO.setPeople(personDTOS);
+        flightReservationPayloadDTO.setPaymentMethod(transformarPaymentMethodAPaymentMethodDTO(flight_reservation.getPaymentMethod()));
+        return flightReservationPayloadDTO;
+    }
+
+    /**
+     * Transforma de un objeto PaymentMethod a PaymentMethodDTO.
+     * @param paymentMethod Objeto con los datos necesarios para hacer la transformación.
+     */
+    private PaymentMethodDTO transformarPaymentMethodAPaymentMethodDTO(PaymentMethod paymentMethod){
+        PaymentMethodDTO paymentMethodDTO = new PaymentMethodDTO();
+        paymentMethodDTO.setType(paymentMethod.getType());
+        paymentMethodDTO.setNumber(paymentMethod.getNumber());
+        paymentMethodDTO.setDues(paymentMethod.getDues());
+        return paymentMethodDTO;
+    }
+
+    /**
+     * Transforma de un objeto Flight a FlightDTO.
      * @param flight Objeto con los datos necesarios para hacer la transformación.
      */
     private FlightDTO transformarFlightAFlightDTO(Flight flight){
@@ -261,6 +319,22 @@ public class FlightServiceImpl implements FlightService {
         }
         person.setMail(personDTO.getMail());
         return person;
+    }
+
+    /**
+     * Transforma de un objeto Person a PersonDTO.
+     * @param person Objeto con los datos necesarios para hacer la transformación.
+     */
+    private PersonDTO transformarPersonAPersonDTO(Person person){
+        PersonDTO personDTO = new PersonDTO();
+        personDTO.setDni(person.getDni());
+        personDTO.setName(person.getName());
+        personDTO.setLastname(person.getLastname());
+        personDTO.setBirthDate(String.valueOf(person.getBirthDate().toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()));
+        personDTO.setMail(person.getMail());
+        return personDTO;
     }
 
     /**
