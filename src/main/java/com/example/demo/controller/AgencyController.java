@@ -36,6 +36,7 @@ public class AgencyController {
      * @param dateTo La fecha final.
      * @param destination El lugar destino.
      */
+
     @GetMapping("/api/v1/hotels")
     public ResponseEntity<List<HotelDTO>> obtenerHoteles(@RequestParam(required = false) @DateTimeFormat(pattern="dd/MM/yyyy") LocalDate dateFrom, @RequestParam(required = false) @DateTimeFormat(pattern="dd/MM/yyyy") LocalDate dateTo, @RequestParam(required = false) String destination){
         if (dateFrom == null && dateTo == null && destination == null)
@@ -65,6 +66,7 @@ public class AgencyController {
      * Realiza la reserva de un hotel en base a el objeto payloadHotelDTO.
      * @param payloadHotelDTO Objeto con los datos para realizar una reserva de hotel.
      */
+
     @PostMapping("/api/v1/booking")
     public ResponseEntity<StatusCodeDTO> reservarHotel(@RequestBody @Valid PayloadHotelDTO payloadHotelDTO){
         return new ResponseEntity<>(hotelService.reservar(payloadHotelDTO), HttpStatus.OK);
@@ -118,5 +120,13 @@ public class AgencyController {
     @DeleteMapping ("/api/v1/flights/delete")
     public ResponseEntity<StatusCodeDTO>eliminarVuelo(@RequestParam String flightNumber){
         return new ResponseEntity<>(flightService.deleteFlight(flightNumber), HttpStatus.OK);
+    }
+
+    /**
+     * Obtiene una lista de todos las reservas de vuelos.
+     */
+    @GetMapping("/api/v1/flight-reservations")
+    public ResponseEntity<List<FlightReservationPayloadDTO>> obtenerReservaVuelos(){
+        return new ResponseEntity<>(flightService.obtenerReservaVuelos(), HttpStatus.OK);
     }
 }
